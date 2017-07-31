@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "428204135163",
+    "firebase_url": "https://mobileiaauthentication.firebaseio.com",
+    "project_id": "mobileiaauthentication",
+    "storage_bucket": "mobileiaauthentication.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:428204135163:android:7417a7b5f72b35b5",
+        "android_client_info": {
+          "package_name": "com.mobileia.example"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "428204135163-e8ng9tr16qro0bikragliugrfntu78qt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mobileia.example",
+            "certificate_hash": "7655a71d31b49a40b3c90a3fdb263a606a76e0c6"
+          }
+        },
+        {
+          "client_id": "428204135163-ak18l1l7sm490d7s6t0d5q4v69m2rruc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC2rif9_8BX2FAgvlhMlwtwmHVHxaKi9Hk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "428204135163-ak18l1l7sm490d7s6t0d5q4v69m2rruc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
