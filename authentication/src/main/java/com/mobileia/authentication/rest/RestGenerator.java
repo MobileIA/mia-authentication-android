@@ -7,11 +7,14 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.mobileia.authentication.entity.User;
+import com.mobileia.authentication.listener.AccessTokenResult;
 import com.mobileia.authentication.listener.LoginResult;
+import com.mobileia.authentication.listener.RegisterResult;
 import com.mobileia.authentication.realm.AuthenticationRealm;
 import com.mobileia.core.Mobileia;
 import com.mobileia.core.rest.DateDeserializer;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.Locale;
 
@@ -38,14 +41,13 @@ public class RestGenerator {
             .addConverterFactory(createConverterFactory())
             .build();
 
-
     /**
-     * Funcion que se encarga de realizar un login a traves del email y password
+     * Funcion que se encarga de pedir el accessToken del usuario
      * @param email
      * @param password
      * @param callback
      */
-    public static void signIn(String email, String password, final LoginResult callback){
+    public static void requestAccessToken(String email, String password, final AccessTokenResult callback){
         // Creamos el servicio
         AuthService service = createService(AuthService.class);
         // Generamos request
@@ -58,8 +60,8 @@ public class RestGenerator {
                     callback.onError();
                     return;
                 }
-                // Pedimos la información del usuario
-                me(response.body().access_token, callback);
+                // Enviamos el accessToken obtenido
+                callback.onSuccess(response.body().access_token);
             }
 
             @Override
@@ -69,7 +71,34 @@ public class RestGenerator {
             }
         });
     }
+    /**
+     * Funcion que se encarga de realizar un login a traves del email y password
+     * @param email
+     * @param password
+     * @param callback
+     */
+    public static void signIn(String email, String password, final LoginResult callback){
+        // Geranamos request
+        requestAccessToken(email, password, new AccessTokenResult() {
+            @Override
+            public void onSuccess(String accessToken) {
+                // Pedimos la información del usuario
+                me(accessToken, callback);
+            }
 
+            @Override
+            public void onError() {
+                // Llamamos al callback porque hubo error
+                callback.onError();
+            }
+        });
+    }
+
+    /**
+     * Funcion que se encarga de obtener los datos del usuario a traves del AccessToken
+     * @param accessToken
+     * @param callback
+     */
     public static void me(final String accessToken, final LoginResult callback){
         // Creamos el servicio
         AuthService service = createService(AuthService.class);
@@ -95,6 +124,44 @@ public class RestGenerator {
                 AuthenticationRealm.getInstance().save(user);
                 // Llamamos al callback con exito
                 callback.onSuccess(user);
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                // Llamamos al callback porque hubo error
+                callback.onError();
+            }
+        });
+    }
+    public static void createAccount(final User user, String password, final RegisterResult callback){
+        // Creamos el servicio
+        AuthService service = createService(AuthService.class);
+        // Configuramos parametros
+        JsonObject params = new JsonObject();
+        params.addProperty("app_id", Mobileia.getInstance().getAppId());
+        params.addProperty("email", user.getEmail());
+        params.addProperty("password", password);
+        params.addProperty("firstname", user.getFirstname());
+        params.addProperty("lastname", user.getLastname());
+        params.addProperty("photo", user.getPhoto());
+        params.addProperty("phone", user.getPhone());
+        params.addProperty("device_token", Mobileia.getInstance().getDeviceToken());
+        params.addProperty("device_model", Mobileia.getInstance().getDeviceName());
+        params.addProperty("platform", 0);
+        params.addProperty("language", Locale.getDefault().getLanguage());
+        params.addProperty("version", BuildConfig.VERSION_NAME);
+        // generamos Request
+        Call<User> call = service.createAccount(params);
+        call.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                // Verificar si la respuesta fue incorrecta
+                if (!response.isSuccessful()) {
+                    callback.onError();
+                    return;
+                }
+                // Llamamos al callback con exito
+                callback.onSuccess(response.body().getId());
             }
 
             @Override

@@ -39,4 +39,14 @@ public interface AuthService {
     Call<User> me(
             @Body JsonObject params
     );
+
+    @Headers({
+            "Accept: application/json",
+            "Content-type: application/json",
+            "User-Agent: Mobileia-Authentication"
+    })
+    @POST("user/create")
+    Call<User> createAccount(
+            @Body JsonObject params
+    );
 }

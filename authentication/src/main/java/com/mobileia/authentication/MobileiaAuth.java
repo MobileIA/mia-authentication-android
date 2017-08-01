@@ -3,7 +3,9 @@ package com.mobileia.authentication;
 import android.content.Context;
 
 import com.mobileia.authentication.entity.User;
+import com.mobileia.authentication.listener.AccessTokenResult;
 import com.mobileia.authentication.listener.LoginResult;
+import com.mobileia.authentication.listener.RegisterResult;
 import com.mobileia.authentication.realm.AuthenticationRealm;
 import com.mobileia.authentication.rest.RestGenerator;
 
@@ -42,6 +44,47 @@ public class MobileiaAuth {
      */
     public void signInWithEmailAndPassword(String email, String password, LoginResult callback){
         RestGenerator.signIn(email, password, callback);
+    }
+
+    /**
+     * Funcionalidad que se encarga de registrar una nueva cuenta
+     * @param user
+     * @param password
+     * @param callback
+     */
+    public void createAccount(final User user, final String password, final RegisterResult callback){
+        // Registramos la nueva cuenta
+        RestGenerator.createAccount(user, password, new RegisterResult() {
+            @Override
+            public void onSuccess(int userId) {
+                // Guardamos ID del usuario
+                user.setId(userId);
+                // Pedimos el AccessToken del usuario registrado
+                RestGenerator.requestAccessToken(user.getEmail(), password, new AccessTokenResult() {
+                    @Override
+                    public void onSuccess(String accessToken) {
+                        // Guardamos el AccessToken
+                        user.setAccessToken(accessToken);
+                        // Guardamos usuario en la DB
+                        AuthenticationRealm.getInstance().save(user);
+                        // Llamamos Success
+                        callback.onSuccess(user.getId());
+                    }
+
+                    @Override
+                    public void onError() {
+                        // Se produjo un error
+                        callback.onError();
+                    }
+                });
+            }
+
+            @Override
+            public void onError() {
+                // Se produjo un error
+                callback.onError();
+            }
+        });
     }
 
     /**
