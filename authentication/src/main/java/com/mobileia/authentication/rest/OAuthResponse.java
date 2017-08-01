@@ -1,10 +1,10 @@
-package com.mobileia.authentication.entity;
+package com.mobileia.authentication.rest;
 
 /**
  * Created by matiascamiletti on 31/7/17.
  */
 
-public class OAuth {
+public class OAuthResponse {
     public int id;
     public String access_token;
     public int expires_in;
