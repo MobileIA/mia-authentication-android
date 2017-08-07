@@ -6,13 +6,18 @@ import android.support.v4.BuildConfig;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
+import com.mobileia.authentication.entity.AccessToken;
 import com.mobileia.authentication.entity.User;
 import com.mobileia.authentication.listener.AccessTokenResult;
 import com.mobileia.authentication.listener.LoginResult;
 import com.mobileia.authentication.listener.RegisterResult;
 import com.mobileia.authentication.realm.AuthenticationRealm;
 import com.mobileia.core.Mobileia;
+import com.mobileia.core.entity.Error;
 import com.mobileia.core.rest.DateDeserializer;
+import com.mobileia.core.rest.RestBody;
+import com.mobileia.core.rest.RestBodyCall;
+import com.mobileia.core.rest.RestBuilder;
 
 import java.io.IOException;
 import java.util.Date;
@@ -28,96 +33,85 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by matiascamiletti on 31/7/17.
  */
 
-public class RestGenerator {
-    /**
-     * URL de la API
-     */
-    private static final String API_BASE_URL = "http://auth.mobileia.com/";
-    /**
-     * Almacena la instancia de Retrofit
-     */
-    private static Retrofit sRetrofit = new Retrofit.Builder()
-            .baseUrl(API_BASE_URL)
-            .addConverterFactory(createConverterFactory())
-            .build();
+public class RestGenerator extends RestBuilder {
 
     /**
-     * Funcion que se encarga de pedir el accessToken del usuario
-     * @param email
-     * @param password
+     * Hace un request para generar un AccessToken desde uan cuenta de facebook
+     * @param facebookId
+     * @param facebookAccessToken
      * @param callback
      */
-    public static void requestAccessToken(String email, String password, final AccessTokenResult callback){
+    public void oauthFacebook(String facebookId, String facebookAccessToken, final AccessTokenResult callback){
         // Creamos el servicio
         AuthService service = createService(AuthService.class);
         // Generamos request
-        Call<OAuthResponse> call = service.createAccessToken(Mobileia.getInstance().getAppId(), "password", email, password, Mobileia.getInstance().getDeviceToken(), Mobileia.getInstance().getDeviceName(), 0, Locale.getDefault().getLanguage(), BuildConfig.VERSION_NAME);
-        call.enqueue(new Callback<OAuthResponse>() {
+        RestBodyCall<AccessToken> call = service.oauthWithFacebook(Mobileia.getInstance().getAppId(), "facebook", facebookId, facebookAccessToken);
+        call.enqueue(new Callback<RestBody<AccessToken>>() {
             @Override
-            public void onResponse(Call<OAuthResponse> call, Response<OAuthResponse> response) {
+            public void onResponse(Call<RestBody<AccessToken>> call, Response<RestBody<AccessToken>> response) {
                 // Verificar si la respuesta fue incorrecta
-                if (!response.isSuccessful()) {
-                    callback.onError();
+                if (!response.isSuccessful() || !response.body().success) {
+                    callback.onError(response.body().error);
                     return;
                 }
                 // Enviamos el accessToken obtenido
-                callback.onSuccess(response.body().access_token);
+                callback.onSuccess(response.body().response.access_token);
             }
 
             @Override
-            public void onFailure(Call<OAuthResponse> call, Throwable t) {
-                // Llamamos al callback porque hubo error
-                callback.onError();
+            public void onFailure(Call<RestBody<AccessToken>> call, Throwable t) {
+                callback.onError(new Error(-1, "Inesperado"));
             }
         });
     }
+
     /**
-     * Funcion que se encarga de realizar un login a traves del email y password
-     * @param email
-     * @param password
+     * Funcionalidad para registra una cuenta con Facebook
+     * @param facebookId
+     * @param facebookAccessToken
      * @param callback
      */
-    public static void signIn(String email, String password, final LoginResult callback){
-        // Geranamos request
-        requestAccessToken(email, password, new AccessTokenResult() {
+    public void registerWithFacebook(String facebookId, String facebookAccessToken, final RegisterResult callback){
+        // Creamos el servicio
+        AuthService service = createService(AuthService.class);
+        // Generamos Request
+        RestBodyCall<User> call = service.registerWithFacebook(Mobileia.getInstance().getAppId(), "facebook", facebookId, facebookAccessToken);
+        call.enqueue(new Callback<RestBody<User>>() {
             @Override
-            public void onSuccess(String accessToken) {
-                // Pedimos la información del usuario
-                me(accessToken, callback);
+            public void onResponse(Call<RestBody<User>> call, Response<RestBody<User>> response) {
+                // Verificar si la respuesta fue incorrecta
+                if (!response.isSuccessful() || !response.body().success) {
+                    callback.onError();
+                    return;
+                }
             }
 
             @Override
-            public void onError() {
-                // Llamamos al callback porque hubo error
+            public void onFailure(Call<RestBody<User>> call, Throwable t) {
                 callback.onError();
             }
         });
     }
-
     /**
      * Funcion que se encarga de obtener los datos del usuario a traves del AccessToken
      * @param accessToken
      * @param callback
      */
-    public static void me(final String accessToken, final LoginResult callback){
+    public void me(final String accessToken, final LoginResult callback){
         // Creamos el servicio
         AuthService service = createService(AuthService.class);
-        // Configuramos parametros
-        JsonObject params = new JsonObject();
-        params.addProperty("app_id", Mobileia.getInstance().getAppId());
-        params.addProperty("access_token", accessToken);
         // generamos Request
-        Call<User> call = service.me(params);
-        call.enqueue(new Callback<User>() {
+        RestBodyCall<User> call = service.me(Mobileia.getInstance().getAppId(), accessToken);
+        call.enqueue(new Callback<RestBody<User>>() {
             @Override
-            public void onResponse(Call<User> call, Response<User> response) {
+            public void onResponse(Call<RestBody<User>> call, Response<RestBody<User>> response) {
                 // Verificar si la respuesta fue incorrecta
-                if (!response.isSuccessful()) {
-                    callback.onError();
+                if (!response.isSuccessful() || !response.body().success) {
+                    callback.onError(response.body().error);
                     return;
                 }
                 // Obtenemos usuario
-                User user = response.body();
+                User user = response.body().response;
                 // Guardamos el AccessToken
                 user.setAccessToken(accessToken);
                 // Guardamos usuario en la DB
@@ -127,13 +121,78 @@ public class RestGenerator {
             }
 
             @Override
-            public void onFailure(Call<User> call, Throwable t) {
+            public void onFailure(Call<RestBody<User>> call, Throwable t) {
                 // Llamamos al callback porque hubo error
-                callback.onError();
+                callback.onError(new Error(-1, "No se pudo obtener el perfil del usuario"));
             }
         });
     }
-    public static void createAccount(final User user, String password, final RegisterResult callback){
+
+
+
+
+
+
+
+
+
+
+
+    /**
+     * Funcion que se encarga de pedir el accessToken del usuario
+     * @param email
+     * @param password
+     * @param callback
+     */
+    public void requestAccessToken(String email, String password, final AccessTokenResult callback){
+        // Creamos el servicio
+        AuthService service = createService(AuthService.class);
+        // Generamos request
+        Call<OAuthResponse> call = service.createAccessToken(Mobileia.getInstance().getAppId(), "password", email, password, Mobileia.getInstance().getDeviceToken(), Mobileia.getInstance().getDeviceName(), 0, Locale.getDefault().getLanguage(), BuildConfig.VERSION_NAME);
+        call.enqueue(new Callback<OAuthResponse>() {
+            @Override
+            public void onResponse(Call<OAuthResponse> call, Response<OAuthResponse> response) {
+                // Verificar si la respuesta fue incorrecta
+                if (!response.isSuccessful()) {
+                    callback.onError(new Error(-1, "Inesperado"));
+                    return;
+                }
+                // Enviamos el accessToken obtenido
+                callback.onSuccess(response.body().access_token);
+            }
+
+            @Override
+            public void onFailure(Call<OAuthResponse> call, Throwable t) {
+                // Llamamos al callback porque hubo error
+                callback.onError(new Error(-1, "Inesperado"));
+            }
+        });
+    }
+    /**
+     * Funcion que se encarga de realizar un login a traves del email y password
+     * @param email
+     * @param password
+     * @param callback
+     */
+    public void signIn(String email, String password, final LoginResult callback){
+        // Geranamos request
+        requestAccessToken(email, password, new AccessTokenResult() {
+            @Override
+            public void onSuccess(String accessToken) {
+                // Pedimos la información del usuario
+                me(accessToken, callback);
+            }
+
+            @Override
+            public void onError(Error error) {
+                // Llamamos al callback porque hubo error
+                callback.onError(new Error(-1, "Inesperado"));
+            }
+        });
+    }
+
+
+    public void createAccount(final User user, String password, final RegisterResult callback){
         // Creamos el servicio
         AuthService service = createService(AuthService.class);
         // Configuramos parametros
@@ -171,23 +230,9 @@ public class RestGenerator {
             }
         });
     }
-    /**
-     * Funcion que se encarga de crear el convertor para parsear las fechas en las peticiones
-     * @return
-     */
-    public static GsonConverterFactory createConverterFactory(){
-        Gson gson = new GsonBuilder()
-                //.setDateFormat("yyyy-MM-dd HH:mm:ss")
-                .registerTypeAdapter(Date.class, new DateDeserializer()).create();
-        return GsonConverterFactory.create(gson);
-    }
-    /**
-     * Crea el servicio de Retrofit
-     * @param serviceClass
-     * @param <S>
-     * @return
-     */
-    public static <S> S createService(Class<S> serviceClass) {
-        return sRetrofit.create(serviceClass);
+
+    @Override
+    public String getBaseUrl() {
+        return "http://authentication.mobileia.com/";
     }
 }

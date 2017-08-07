@@ -10,6 +10,7 @@ import com.mobileia.authentication.entity.User;
 import com.mobileia.authentication.listener.LoginResult;
 import com.mobileia.authentication.listener.RegisterResult;
 import com.mobileia.core.Mobileia;
+import com.mobileia.core.entity.Error;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -18,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         // Configurar Mobileia Lab
-        Mobileia.getInstance().setAppId(4);
+        Mobileia.getInstance().setAppId(8);
         // Configurar token del dispositivo
         Mobileia.getInstance().setDeviceToken(FirebaseInstanceId.getInstance().getToken());
         // Verificar si ya esta logueado
@@ -51,8 +52,29 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onError() {
+            public void onError(Error error) {
                 System.out.println("MIA Auth: Error");
+            }
+        });
+    }
+
+    public void onClickFacebook(View v){
+        MobileiaAuth.getInstance(this).signInWithFacebook(this, new LoginResult() {
+            @Override
+            public void onSuccess(User user) {
+                System.out.println("MIA Auth: Success Facebook");
+                System.out.println("MIA Auth: " + user.getId());
+                System.out.println("MIA Auth: " + user.getFirstname());
+                System.out.println("MIA Auth: " + user.getLastname());
+                System.out.println("MIA Auth: " + user.getEmail());
+                System.out.println("MIA Auth: " + user.getAccessToken());
+                System.out.println("MIA Auth: " + user.getPhoto());
+                System.out.println("MIA Auth: " + user.getCreatedAt());
+            }
+
+            @Override
+            public void onError(Error error) {
+                System.out.println("MIA Auth: Error Facebook: " + error.message);
             }
         });
     }

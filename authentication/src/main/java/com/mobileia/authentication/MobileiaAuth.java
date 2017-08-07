@@ -1,5 +1,6 @@
 package com.mobileia.authentication;
 
+import android.app.Activity;
 import android.content.Context;
 
 import com.mobileia.authentication.entity.User;
@@ -8,6 +9,7 @@ import com.mobileia.authentication.listener.LoginResult;
 import com.mobileia.authentication.listener.RegisterResult;
 import com.mobileia.authentication.realm.AuthenticationRealm;
 import com.mobileia.authentication.rest.RestGenerator;
+import com.mobileia.core.entity.Error;
 
 import io.realm.Realm;
 
@@ -37,13 +39,22 @@ public class MobileiaAuth {
     }
 
     /**
+     * Iniciar sesión con Facebook
+     * @param activity
+     * @param callback
+     */
+    public void signInWithFacebook(Activity activity, LoginResult callback){
+        new AuthFacebook(activity).signIn(callback);
+    }
+
+    /**
      * Funcion para realizar un login con email y password
      * @param email
      * @param password
      * @param callback
      */
     public void signInWithEmailAndPassword(String email, String password, LoginResult callback){
-        RestGenerator.signIn(email, password, callback);
+        new RestGenerator().signIn(email, password, callback);
     }
 
     /**
@@ -54,13 +65,13 @@ public class MobileiaAuth {
      */
     public void createAccount(final User user, final String password, final RegisterResult callback){
         // Registramos la nueva cuenta
-        RestGenerator.createAccount(user, password, new RegisterResult() {
+        new RestGenerator().createAccount(user, password, new RegisterResult() {
             @Override
             public void onSuccess(int userId) {
                 // Guardamos ID del usuario
                 user.setId(userId);
                 // Pedimos el AccessToken del usuario registrado
-                RestGenerator.requestAccessToken(user.getEmail(), password, new AccessTokenResult() {
+                new RestGenerator().requestAccessToken(user.getEmail(), password, new AccessTokenResult() {
                     @Override
                     public void onSuccess(String accessToken) {
                         // Guardamos el AccessToken
@@ -72,7 +83,7 @@ public class MobileiaAuth {
                     }
 
                     @Override
-                    public void onError() {
+                    public void onError(Error error) {
                         // Se produjo un error
                         callback.onError();
                     }
