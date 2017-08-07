@@ -20,6 +20,15 @@ public interface AuthService {
 
     @FormUrlEncoded
     @POST("api/oauth")
+    RestBodyCall<AccessToken> oauth(
+            @Field("app_id") int app_id,
+            @Field("grant_type") String grant_type,
+            @Field("email") String email,
+            @Field("password") String password
+    );
+
+    @FormUrlEncoded
+    @POST("api/oauth")
     RestBodyCall<AccessToken> oauthWithFacebook(
             @Field("app_id") int app_id,
             @Field("grant_type") String grant_type,
@@ -46,7 +55,7 @@ public interface AuthService {
 
 
 
-    @FormUrlEncoded
+    /*@FormUrlEncoded
     @POST("oauth")
     Call<OAuthResponse> createAccessToken(
             @Field("app_id") int app_id,
@@ -58,7 +67,7 @@ public interface AuthService {
             @Field("platform") int platform,
             @Field("language") String language,
             @Field("version") String version
-    );
+    );*/
 
     @Headers({
             "Accept: application/json",

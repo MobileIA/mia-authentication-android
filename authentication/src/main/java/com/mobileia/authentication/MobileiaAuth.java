@@ -71,7 +71,7 @@ public class MobileiaAuth {
                 // Guardamos ID del usuario
                 user.setId(userId);
                 // Pedimos el AccessToken del usuario registrado
-                new RestGenerator().requestAccessToken(user.getEmail(), password, new AccessTokenResult() {
+                new RestGenerator().oauth(user.getEmail(), password, new AccessTokenResult() {
                     @Override
                     public void onSuccess(String accessToken) {
                         // Guardamos el AccessToken

@@ -36,6 +36,58 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RestGenerator extends RestBuilder {
 
     /**
+     * Funcion que se encarga de realizar un login a traves del email y password
+     * @param email
+     * @param password
+     * @param callback
+     */
+    public void signIn(String email, String password, final LoginResult callback){
+        // Geranamos request
+        oauth(email, password, new AccessTokenResult() {
+            @Override
+            public void onSuccess(String accessToken) {
+                // Pedimos la información del usuario
+                me(accessToken, callback);
+            }
+
+            @Override
+            public void onError(Error error) {
+                // Llamamos al callback porque hubo error
+                callback.onError(error);
+            }
+        });
+    }
+    /**
+     * Funcion que se encarga de pedir el accessToken del usuario
+     * @param email
+     * @param password
+     * @param callback
+     */
+    public void oauth(String email, String password, final AccessTokenResult callback){
+        // Creamos el servicio
+        AuthService service = createService(AuthService.class);
+        // Generamos request
+        RestBodyCall<AccessToken> call = service.oauth(Mobileia.getInstance().getAppId(), "normal", email, password);
+        call.enqueue(new Callback<RestBody<AccessToken>>() {
+            @Override
+            public void onResponse(Call<RestBody<AccessToken>> call, Response<RestBody<AccessToken>> response) {
+                // Verificar si la respuesta fue incorrecta
+                if (!response.isSuccessful() || !response.body().success) {
+                    callback.onError(response.body().error);
+                    return;
+                }
+                // Enviamos el accessToken obtenido
+                callback.onSuccess(response.body().response.access_token);
+            }
+
+            @Override
+            public void onFailure(Call<RestBody<AccessToken>> call, Throwable t) {
+                // Llamamos al callback porque hubo error
+                callback.onError(new Error(-1, "Inesperado"));
+            }
+        });
+    }
+    /**
      * Hace un request para generar un AccessToken desde uan cuenta de facebook
      * @param facebookId
      * @param facebookAccessToken
@@ -138,58 +190,8 @@ public class RestGenerator extends RestBuilder {
 
 
 
-    /**
-     * Funcion que se encarga de pedir el accessToken del usuario
-     * @param email
-     * @param password
-     * @param callback
-     */
-    public void requestAccessToken(String email, String password, final AccessTokenResult callback){
-        // Creamos el servicio
-        AuthService service = createService(AuthService.class);
-        // Generamos request
-        Call<OAuthResponse> call = service.createAccessToken(Mobileia.getInstance().getAppId(), "password", email, password, Mobileia.getInstance().getDeviceToken(), Mobileia.getInstance().getDeviceName(), 0, Locale.getDefault().getLanguage(), BuildConfig.VERSION_NAME);
-        call.enqueue(new Callback<OAuthResponse>() {
-            @Override
-            public void onResponse(Call<OAuthResponse> call, Response<OAuthResponse> response) {
-                // Verificar si la respuesta fue incorrecta
-                if (!response.isSuccessful()) {
-                    callback.onError(new Error(-1, "Inesperado"));
-                    return;
-                }
-                // Enviamos el accessToken obtenido
-                callback.onSuccess(response.body().access_token);
-            }
 
-            @Override
-            public void onFailure(Call<OAuthResponse> call, Throwable t) {
-                // Llamamos al callback porque hubo error
-                callback.onError(new Error(-1, "Inesperado"));
-            }
-        });
-    }
-    /**
-     * Funcion que se encarga de realizar un login a traves del email y password
-     * @param email
-     * @param password
-     * @param callback
-     */
-    public void signIn(String email, String password, final LoginResult callback){
-        // Geranamos request
-        requestAccessToken(email, password, new AccessTokenResult() {
-            @Override
-            public void onSuccess(String accessToken) {
-                // Pedimos la información del usuario
-                me(accessToken, callback);
-            }
 
-            @Override
-            public void onError(Error error) {
-                // Llamamos al callback porque hubo error
-                callback.onError(new Error(-1, "Inesperado"));
-            }
-        });
-    }
 
 
     public void createAccount(final User user, String password, final RegisterResult callback){
