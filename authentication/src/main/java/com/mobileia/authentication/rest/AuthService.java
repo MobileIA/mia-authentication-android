@@ -37,12 +37,28 @@ public interface AuthService {
     );
 
     @FormUrlEncoded
+    @POST("api/oauth")
+    RestBodyCall<AccessToken> oauthWithGoogle(
+            @Field("app_id") int app_id,
+            @Field("grant_type") String grant_type,
+            @Field("google_token") String google_token
+    );
+
+    @FormUrlEncoded
     @POST("api/register")
     RestBodyCall<User> registerWithFacebook(
             @Field("app_id") int app_id,
             @Field("register_type") String grant_type,
             @Field("facebook_id") String facebook_id,
             @Field("facebook_access_token") String facebook_access_token
+    );
+
+    @FormUrlEncoded
+    @POST("api/register")
+    RestBodyCall<User> registerWithGoogle(
+            @Field("app_id") int app_id,
+            @Field("register_type") String grant_type,
+            @Field("google_token") String google_token
     );
 
     @FormUrlEncoded

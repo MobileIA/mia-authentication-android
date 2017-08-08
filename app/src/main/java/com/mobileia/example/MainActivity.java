@@ -1,5 +1,6 @@
 package com.mobileia.example;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -79,6 +80,27 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    public void onClickGoogle(View view){
+        MobileiaAuth.getInstance(this).signInWithGoogle(this, "428204135163-ak18l1l7sm490d7s6t0d5q4v69m2rruc.apps.googleusercontent.com", new LoginResult() {
+            @Override
+            public void onSuccess(User user) {
+                System.out.println("MIA Auth: Success Google");
+                System.out.println("MIA Auth: " + user.getId());
+                System.out.println("MIA Auth: " + user.getFirstname());
+                System.out.println("MIA Auth: " + user.getLastname());
+                System.out.println("MIA Auth: " + user.getEmail());
+                System.out.println("MIA Auth: " + user.getAccessToken());
+                System.out.println("MIA Auth: " + user.getPhoto());
+                System.out.println("MIA Auth: " + user.getCreatedAt());
+            }
+
+            @Override
+            public void onError(Error error) {
+                System.out.println("MIA Auth: Error Google: " + error.message);
+            }
+        });
+    }
+
     public void onClickRegister(View v){
         // Creamos el objeto Usuario con los datos
         final User user = new User();
@@ -104,5 +126,11 @@ public class MainActivity extends AppCompatActivity {
                 System.out.println("MIA Auth: Error");
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        MobileiaAuth.getInstance(this).getAuthGoogle().onActivityResult(requestCode, resultCode, data);
     }
 }

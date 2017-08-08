@@ -2,6 +2,7 @@ package com.mobileia.authentication;
 
 import android.app.Activity;
 import android.content.Context;
+import android.support.v4.app.FragmentActivity;
 
 import com.mobileia.authentication.entity.User;
 import com.mobileia.authentication.listener.AccessTokenResult;
@@ -26,6 +27,10 @@ public class MobileiaAuth {
      * Almacena el contexto
      */
     protected Context mContext;
+    /**
+     * Instancia de Google Signin
+     */
+    protected AuthGoogle mAuthGoogle;
 
     /**
      * Obtiene la instancia creada
@@ -45,6 +50,16 @@ public class MobileiaAuth {
      */
     public void signInWithFacebook(Activity activity, LoginResult callback){
         new AuthFacebook(activity).signIn(callback);
+    }
+
+    /**
+     * Iniciar sesión con Google
+     * @param activity
+     * @param callback
+     */
+    public void signInWithGoogle(FragmentActivity activity, String googleId, LoginResult callback){
+        mAuthGoogle = new AuthGoogle(activity);
+        mAuthGoogle.signIn(googleId, callback);
     }
 
     /**
@@ -105,6 +120,12 @@ public class MobileiaAuth {
     public User getCurrentUser(){
         return AuthenticationRealm.getInstance().fetchUser();
     }
+
+    /**
+     * Obtiene instancia de AuthGoogle
+     * @return
+     */
+    public AuthGoogle getAuthGoogle(){ return mAuthGoogle; }
 
     /**
      * Constructor del singleton

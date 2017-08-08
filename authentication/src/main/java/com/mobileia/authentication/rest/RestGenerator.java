@@ -116,6 +116,34 @@ public class RestGenerator extends RestBuilder {
             }
         });
     }
+    /**
+     * Hace un request para generar un AccessToken desde una cuenta de Google
+     * @param googleToken
+     * @param callback
+     */
+    public void oauthGoogle(String googleToken, final AccessTokenResult callback){
+        // Creamos el servicio
+        AuthService service = createService(AuthService.class);
+        // Generamos request
+        RestBodyCall<AccessToken> call = service.oauthWithGoogle(Mobileia.getInstance().getAppId(), "google", googleToken);
+        call.enqueue(new Callback<RestBody<AccessToken>>() {
+            @Override
+            public void onResponse(Call<RestBody<AccessToken>> call, Response<RestBody<AccessToken>> response) {
+                // Verificar si la respuesta fue incorrecta
+                if (!response.isSuccessful() || !response.body().success) {
+                    callback.onError(response.body().error);
+                    return;
+                }
+                // Enviamos el accessToken obtenido
+                callback.onSuccess(response.body().response.access_token);
+            }
+
+            @Override
+            public void onFailure(Call<RestBody<AccessToken>> call, Throwable t) {
+                callback.onError(new Error(-1, "Inesperado"));
+            }
+        });
+    }
 
     /**
      * Funcionalidad para registra una cuenta con Facebook
@@ -136,6 +164,34 @@ public class RestGenerator extends RestBuilder {
                     callback.onError();
                     return;
                 }
+                callback.onSuccess(response.body().response.getId());
+            }
+
+            @Override
+            public void onFailure(Call<RestBody<User>> call, Throwable t) {
+                callback.onError();
+            }
+        });
+    }
+    /**
+     * Funcionalidad para registra una cuenta con Google
+     * @param googleToken
+     * @param callback
+     */
+    public void registerWithGoogle(String googleToken, final RegisterResult callback){
+        // Creamos el servicio
+        AuthService service = createService(AuthService.class);
+        // Generamos Request
+        RestBodyCall<User> call = service.registerWithGoogle(Mobileia.getInstance().getAppId(), "google", googleToken);
+        call.enqueue(new Callback<RestBody<User>>() {
+            @Override
+            public void onResponse(Call<RestBody<User>> call, Response<RestBody<User>> response) {
+                // Verificar si la respuesta fue incorrecta
+                if (!response.isSuccessful() || !response.body().success) {
+                    callback.onError();
+                    return;
+                }
+                callback.onSuccess(response.body().response.getId());
             }
 
             @Override
