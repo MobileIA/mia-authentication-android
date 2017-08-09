@@ -55,6 +55,19 @@ public interface AuthService {
 
     @FormUrlEncoded
     @POST("api/register")
+    RestBodyCall<User> register(
+            @Field("app_id") int app_id,
+            @Field("register_type") String grant_type,
+            @Field("email") String email,
+            @Field("password") String password,
+            @Field("firstname") String firstname,
+            @Field("lastname") String lastname,
+            @Field("photo") String photo,
+            @Field("phone") String phone
+    );
+
+    @FormUrlEncoded
+    @POST("api/register")
     RestBodyCall<User> registerWithFacebook(
             @Field("app_id") int app_id,
             @Field("register_type") String grant_type,
@@ -84,32 +97,5 @@ public interface AuthService {
     RestBodyCall<User> me(
             @Field("app_id") int app_id,
             @Field("access_token") String access_token
-    );
-
-
-
-
-    /*@FormUrlEncoded
-    @POST("oauth")
-    Call<OAuthResponse> createAccessToken(
-            @Field("app_id") int app_id,
-            @Field("grant_type") String grant_type,
-            @Field("email") String email,
-            @Field("password") String password,
-            @Field("device_token") String device_token,
-            @Field("device_model") String device_model,
-            @Field("platform") int platform,
-            @Field("language") String language,
-            @Field("version") String version
-    );*/
-
-    @Headers({
-            "Accept: application/json",
-            "Content-type: application/json",
-            "User-Agent: Mobileia-Authentication"
-    })
-    @POST("user/create")
-    Call<User> createAccount(
-            @Body JsonObject params
     );
 }

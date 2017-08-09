@@ -86,7 +86,7 @@ public class AuthFacebook {
             }
 
             @Override
-            public void onError() {
+            public void onError(Error error) {
                 // No se pudo registrar llamos al callback
                 mCallback.onError(new Error(-1, "No se pudo registrar la cuenta de facebook"));
             }

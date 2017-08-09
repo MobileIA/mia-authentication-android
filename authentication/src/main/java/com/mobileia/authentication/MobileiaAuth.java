@@ -90,12 +90,12 @@ public class MobileiaAuth {
      */
     public void createAccount(final User user, final String password, final RegisterResult callback){
         // Registramos la nueva cuenta
-        new RestGenerator().createAccount(user, password, new RegisterResult() {
+        new RestGenerator().register(user, password, new RegisterResult() {
             @Override
             public void onSuccess(int userId) {
                 // Guardamos ID del usuario
                 user.setId(userId);
-                // Pedimos el AccessToken del usuario registrado
+                // Pedimos un AccessToken
                 new RestGenerator().oauth(user.getEmail(), password, new AccessTokenResult() {
                     @Override
                     public void onSuccess(String accessToken) {
@@ -110,15 +110,15 @@ public class MobileiaAuth {
                     @Override
                     public void onError(Error error) {
                         // Se produjo un error
-                        callback.onError();
+                        callback.onError(error);
                     }
                 });
             }
 
             @Override
-            public void onError() {
+            public void onError(Error error) {
                 // Se produjo un error
-                callback.onError();
+                callback.onError(error);
             }
         });
     }

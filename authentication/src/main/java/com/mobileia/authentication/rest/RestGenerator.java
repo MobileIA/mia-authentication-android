@@ -114,6 +114,25 @@ public class RestGenerator extends RestBuilder {
     }
 
     /**
+     * Hace un request para registrar un usuario con los datos ingresados
+     * @param user
+     * @param password
+     * @param callback
+     */
+    public void register(User user, String password, final RegisterResult callback){
+        /*params.addProperty("device_token", Mobileia.getInstance().getDeviceToken());
+        params.addProperty("device_model", Mobileia.getInstance().getDeviceName());
+        params.addProperty("platform", 0);
+        params.addProperty("language", Locale.getDefault().getLanguage());
+        params.addProperty("version", BuildConfig.VERSION_NAME);*/
+        // Creamos el servicio
+        AuthService service = createService(AuthService.class);
+        // Generamos Request
+        RestBodyCall<User> call = service.register(Mobileia.getInstance().getAppId(), "normal", user.getEmail(), password, user.getFirstname(), user.getLastname(), user.getPhoto(), user.getPhone());
+        // Ejecutamos la request
+        registerExecuteCall(call, callback);
+    }
+    /**
      * Funcionalidad para registra una cuenta con Facebook
      * @param facebookId
      * @param facebookAccessToken
@@ -226,7 +245,7 @@ public class RestGenerator extends RestBuilder {
             public void onResponse(Call<RestBody<User>> call, Response<RestBody<User>> response) {
                 // Verificar si la respuesta fue incorrecta
                 if (!response.isSuccessful() || !response.body().success) {
-                    callback.onError();
+                    callback.onError(response.body().error);
                     return;
                 }
                 callback.onSuccess(response.body().response.getId());
@@ -234,59 +253,7 @@ public class RestGenerator extends RestBuilder {
 
             @Override
             public void onFailure(Call<RestBody<User>> call, Throwable t) {
-                callback.onError();
-            }
-        });
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    public void createAccount(final User user, String password, final RegisterResult callback){
-        // Creamos el servicio
-        AuthService service = createService(AuthService.class);
-        // Configuramos parametros
-        JsonObject params = new JsonObject();
-        params.addProperty("app_id", Mobileia.getInstance().getAppId());
-        params.addProperty("email", user.getEmail());
-        params.addProperty("password", password);
-        params.addProperty("firstname", user.getFirstname());
-        params.addProperty("lastname", user.getLastname());
-        params.addProperty("photo", user.getPhoto());
-        params.addProperty("phone", user.getPhone());
-        params.addProperty("device_token", Mobileia.getInstance().getDeviceToken());
-        params.addProperty("device_model", Mobileia.getInstance().getDeviceName());
-        params.addProperty("platform", 0);
-        params.addProperty("language", Locale.getDefault().getLanguage());
-        params.addProperty("version", BuildConfig.VERSION_NAME);
-        // generamos Request
-        Call<User> call = service.createAccount(params);
-        call.enqueue(new Callback<User>() {
-            @Override
-            public void onResponse(Call<User> call, Response<User> response) {
-                // Verificar si la respuesta fue incorrecta
-                if (!response.isSuccessful()) {
-                    callback.onError();
-                    return;
-                }
-                // Llamamos al callback con exito
-                callback.onSuccess(response.body().getId());
-            }
-
-            @Override
-            public void onFailure(Call<User> call, Throwable t) {
-                // Llamamos al callback porque hubo error
-                callback.onError();
+                callback.onError(new Error(-1, "Inesperado"));
             }
         });
     }

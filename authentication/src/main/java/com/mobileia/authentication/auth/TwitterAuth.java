@@ -58,7 +58,6 @@ public class TwitterAuth extends AuthBase {
                         // Guardamos datos del token
                         mTwitterToken = user.token;
                         mTwitterSecret = user.secret;
-                        System.out.println("Twitter + " + mTwitterToken + " -  " +mTwitterSecret);
                         // Ya se logueo con Twitter, realizamos petición para generar AccessToken
                         requestAccessToken();
                     }

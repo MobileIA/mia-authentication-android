@@ -143,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onError() {
+            public void onError(Error error) {
                 System.out.println("MIA Auth: Error");
             }
         });
