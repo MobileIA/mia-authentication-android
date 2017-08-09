@@ -101,6 +101,27 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    public void onClickTwitter(View v){
+        MobileiaAuth.getInstance(this).signInWithTwitter(this, new LoginResult() {
+            @Override
+            public void onSuccess(User user) {
+                System.out.println("MIA Auth: Success Twitter");
+                System.out.println("MIA Auth: " + user.getId());
+                System.out.println("MIA Auth: " + user.getFirstname());
+                System.out.println("MIA Auth: " + user.getLastname());
+                System.out.println("MIA Auth: " + user.getEmail());
+                System.out.println("MIA Auth: " + user.getAccessToken());
+                System.out.println("MIA Auth: " + user.getPhoto());
+                System.out.println("MIA Auth: " + user.getCreatedAt());
+            }
+
+            @Override
+            public void onError(Error error) {
+                System.out.println("MIA Auth: Error Twitter: " + error.message);
+            }
+        });
+    }
+
     public void onClickRegister(View v){
         // Creamos el objeto Usuario con los datos
         final User user = new User();

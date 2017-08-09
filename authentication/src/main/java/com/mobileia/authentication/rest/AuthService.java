@@ -45,6 +45,15 @@ public interface AuthService {
     );
 
     @FormUrlEncoded
+    @POST("api/oauth")
+    RestBodyCall<AccessToken> oauthWithTwitter(
+            @Field("app_id") int app_id,
+            @Field("grant_type") String grant_type,
+            @Field("twitter_token") String twitter_token,
+            @Field("twitter_secret") String twitter_secret
+    );
+
+    @FormUrlEncoded
     @POST("api/register")
     RestBodyCall<User> registerWithFacebook(
             @Field("app_id") int app_id,
@@ -59,6 +68,15 @@ public interface AuthService {
             @Field("app_id") int app_id,
             @Field("register_type") String grant_type,
             @Field("google_token") String google_token
+    );
+
+    @FormUrlEncoded
+    @POST("api/register")
+    RestBodyCall<User> registerWithTwitter(
+            @Field("app_id") int app_id,
+            @Field("register_type") String grant_type,
+            @Field("twitter_token") String twitter_token,
+            @Field("twitter_secret") String twitter_secret
     );
 
     @FormUrlEncoded

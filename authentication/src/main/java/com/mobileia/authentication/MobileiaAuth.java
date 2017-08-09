@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.support.v4.app.FragmentActivity;
 
+import com.mobileia.authentication.auth.TwitterAuth;
 import com.mobileia.authentication.entity.User;
 import com.mobileia.authentication.listener.AccessTokenResult;
 import com.mobileia.authentication.listener.LoginResult;
@@ -60,6 +61,15 @@ public class MobileiaAuth {
     public void signInWithGoogle(FragmentActivity activity, String googleId, LoginResult callback){
         mAuthGoogle = new AuthGoogle(activity);
         mAuthGoogle.signIn(googleId, callback);
+    }
+
+    /**
+     * Iniciar sesión con Twitter
+     * @param activity
+     * @param callback
+     */
+    public void signInWithTwitter(Activity activity, LoginResult callback){
+        new TwitterAuth(activity).signIn(callback);
     }
 
     /**

@@ -2,4 +2,6 @@
     <string name="app_name">Mobileia Authentication</string>
     <string name="facebook_app_id">794553410727704</string>
     <string name="fb_login_protocol_scheme">fb794553410727704</string>
+    <string name="com.twitter.sdk.android.CONSUMER_KEY">Q8koLO7n4kwvCOEsvQTBQ</string>
+    <string name="com.twitter.sdk.android.CONSUMER_SECRET">HkOSyAvKwkZJTdUoPKqnhfdUBCO9gH4Ftif4ZObww</string>
 </resources>

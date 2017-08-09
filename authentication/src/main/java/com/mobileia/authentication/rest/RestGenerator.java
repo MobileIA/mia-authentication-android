@@ -68,24 +68,8 @@ public class RestGenerator extends RestBuilder {
         AuthService service = createService(AuthService.class);
         // Generamos request
         RestBodyCall<AccessToken> call = service.oauth(Mobileia.getInstance().getAppId(), "normal", email, password);
-        call.enqueue(new Callback<RestBody<AccessToken>>() {
-            @Override
-            public void onResponse(Call<RestBody<AccessToken>> call, Response<RestBody<AccessToken>> response) {
-                // Verificar si la respuesta fue incorrecta
-                if (!response.isSuccessful() || !response.body().success) {
-                    callback.onError(response.body().error);
-                    return;
-                }
-                // Enviamos el accessToken obtenido
-                callback.onSuccess(response.body().response.access_token);
-            }
-
-            @Override
-            public void onFailure(Call<RestBody<AccessToken>> call, Throwable t) {
-                // Llamamos al callback porque hubo error
-                callback.onError(new Error(-1, "Inesperado"));
-            }
-        });
+        // Ejecutamos request
+        oauthExecuteCall(call, callback);
     }
     /**
      * Hace un request para generar un AccessToken desde uan cuenta de facebook
@@ -98,23 +82,8 @@ public class RestGenerator extends RestBuilder {
         AuthService service = createService(AuthService.class);
         // Generamos request
         RestBodyCall<AccessToken> call = service.oauthWithFacebook(Mobileia.getInstance().getAppId(), "facebook", facebookId, facebookAccessToken);
-        call.enqueue(new Callback<RestBody<AccessToken>>() {
-            @Override
-            public void onResponse(Call<RestBody<AccessToken>> call, Response<RestBody<AccessToken>> response) {
-                // Verificar si la respuesta fue incorrecta
-                if (!response.isSuccessful() || !response.body().success) {
-                    callback.onError(response.body().error);
-                    return;
-                }
-                // Enviamos el accessToken obtenido
-                callback.onSuccess(response.body().response.access_token);
-            }
-
-            @Override
-            public void onFailure(Call<RestBody<AccessToken>> call, Throwable t) {
-                callback.onError(new Error(-1, "Inesperado"));
-            }
-        });
+        // Ejecutamos request
+        oauthExecuteCall(call, callback);
     }
     /**
      * Hace un request para generar un AccessToken desde una cuenta de Google
@@ -126,23 +95,22 @@ public class RestGenerator extends RestBuilder {
         AuthService service = createService(AuthService.class);
         // Generamos request
         RestBodyCall<AccessToken> call = service.oauthWithGoogle(Mobileia.getInstance().getAppId(), "google", googleToken);
-        call.enqueue(new Callback<RestBody<AccessToken>>() {
-            @Override
-            public void onResponse(Call<RestBody<AccessToken>> call, Response<RestBody<AccessToken>> response) {
-                // Verificar si la respuesta fue incorrecta
-                if (!response.isSuccessful() || !response.body().success) {
-                    callback.onError(response.body().error);
-                    return;
-                }
-                // Enviamos el accessToken obtenido
-                callback.onSuccess(response.body().response.access_token);
-            }
-
-            @Override
-            public void onFailure(Call<RestBody<AccessToken>> call, Throwable t) {
-                callback.onError(new Error(-1, "Inesperado"));
-            }
-        });
+        // Ejecutamos request
+        oauthExecuteCall(call, callback);
+    }
+    /**
+     * Hace un request para generar un AccessToken desde una cuenta de twitter
+     * @param twitterToken
+     * @param twitterSecret
+     * @param callback
+     */
+    public void oauthTwitter(String twitterToken, String twitterSecret, final AccessTokenResult callback){
+        // Creamos el servicio
+        AuthService service = createService(AuthService.class);
+        // Generamos request
+        RestBodyCall<AccessToken> call = service.oauthWithTwitter(Mobileia.getInstance().getAppId(), "twitter", twitterToken, twitterSecret);
+        // Ejecutamos request
+        oauthExecuteCall(call, callback);
     }
 
     /**
@@ -156,22 +124,8 @@ public class RestGenerator extends RestBuilder {
         AuthService service = createService(AuthService.class);
         // Generamos Request
         RestBodyCall<User> call = service.registerWithFacebook(Mobileia.getInstance().getAppId(), "facebook", facebookId, facebookAccessToken);
-        call.enqueue(new Callback<RestBody<User>>() {
-            @Override
-            public void onResponse(Call<RestBody<User>> call, Response<RestBody<User>> response) {
-                // Verificar si la respuesta fue incorrecta
-                if (!response.isSuccessful() || !response.body().success) {
-                    callback.onError();
-                    return;
-                }
-                callback.onSuccess(response.body().response.getId());
-            }
-
-            @Override
-            public void onFailure(Call<RestBody<User>> call, Throwable t) {
-                callback.onError();
-            }
-        });
+        // Ejecutamos la request
+        registerExecuteCall(call, callback);
     }
     /**
      * Funcionalidad para registra una cuenta con Google
@@ -183,22 +137,22 @@ public class RestGenerator extends RestBuilder {
         AuthService service = createService(AuthService.class);
         // Generamos Request
         RestBodyCall<User> call = service.registerWithGoogle(Mobileia.getInstance().getAppId(), "google", googleToken);
-        call.enqueue(new Callback<RestBody<User>>() {
-            @Override
-            public void onResponse(Call<RestBody<User>> call, Response<RestBody<User>> response) {
-                // Verificar si la respuesta fue incorrecta
-                if (!response.isSuccessful() || !response.body().success) {
-                    callback.onError();
-                    return;
-                }
-                callback.onSuccess(response.body().response.getId());
-            }
-
-            @Override
-            public void onFailure(Call<RestBody<User>> call, Throwable t) {
-                callback.onError();
-            }
-        });
+        // Ejecutamos la request
+        registerExecuteCall(call, callback);
+    }
+    /**
+     * Funcionalidad para registra una cuenta con Facebook
+     * @param twitterToken
+     * @param twitterSecret
+     * @param callback
+     */
+    public void registerWithTwitter(String twitterToken, String twitterSecret, final RegisterResult callback){
+        // Creamos el servicio
+        AuthService service = createService(AuthService.class);
+        // Generamos Request
+        RestBodyCall<User> call = service.registerWithTwitter(Mobileia.getInstance().getAppId(), "twitter", twitterToken, twitterSecret);
+        // Ejecutamos la request
+        registerExecuteCall(call, callback);
     }
     /**
      * Funcion que se encarga de obtener los datos del usuario a traves del AccessToken
@@ -236,6 +190,54 @@ public class RestGenerator extends RestBuilder {
         });
     }
 
+    /**
+     * Funcion que se encarga de ejecutar la request Oauth de todos los tipos
+     * @param call
+     * @param callback
+     */
+    protected void oauthExecuteCall(RestBodyCall<AccessToken> call, final AccessTokenResult callback){
+        call.enqueue(new Callback<RestBody<AccessToken>>() {
+            @Override
+            public void onResponse(Call<RestBody<AccessToken>> call, Response<RestBody<AccessToken>> response) {
+                // Verificar si la respuesta fue incorrecta
+                if (!response.isSuccessful() || !response.body().success) {
+                    callback.onError(response.body().error);
+                    return;
+                }
+                // Enviamos el accessToken obtenido
+                callback.onSuccess(response.body().response.access_token);
+            }
+
+            @Override
+            public void onFailure(Call<RestBody<AccessToken>> call, Throwable t) {
+                callback.onError(new Error(-1, "Inesperado"));
+            }
+        });
+    }
+
+    /**
+     * Funcion que se encarga de ejecutar la request para regostro
+     * @param call
+     * @param callback
+     */
+    protected void registerExecuteCall(RestBodyCall<User> call, final RegisterResult callback){
+        call.enqueue(new Callback<RestBody<User>>() {
+            @Override
+            public void onResponse(Call<RestBody<User>> call, Response<RestBody<User>> response) {
+                // Verificar si la respuesta fue incorrecta
+                if (!response.isSuccessful() || !response.body().success) {
+                    callback.onError();
+                    return;
+                }
+                callback.onSuccess(response.body().response.getId());
+            }
+
+            @Override
+            public void onFailure(Call<RestBody<User>> call, Throwable t) {
+                callback.onError();
+            }
+        });
+    }
 
 
 
