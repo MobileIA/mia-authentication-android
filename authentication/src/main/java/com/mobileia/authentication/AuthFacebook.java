@@ -66,7 +66,7 @@ public class AuthFacebook {
                     createNewAccount(facebookId, facebookAccessToken);
                 }else{
                     // No se pudo loguear por otro motivo
-                    mCallback.onError(new Error(-1, "No se pudo obtener el access_token"));
+                    mCallback.onError(error);
                 }
             }
         });
@@ -88,7 +88,7 @@ public class AuthFacebook {
             @Override
             public void onError(Error error) {
                 // No se pudo registrar llamos al callback
-                mCallback.onError(new Error(-1, "No se pudo registrar la cuenta de facebook"));
+                mCallback.onError(error);
             }
         });
     }

@@ -96,7 +96,7 @@ public class AuthGoogle {
                 }else{
                     System.out.println("GoogleMiA : error : " + error.message + " " + error.code);
                     // No se pudo loguear por otro motivo
-                    mCallback.onError(new Error(-1, "No se pudo obtener el access_token"));
+                    mCallback.onError(error);
                 }
             }
         });

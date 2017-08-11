@@ -39,14 +39,13 @@ abstract public class AuthBase implements AuthInterface {
 
         @Override
         public void onError(Error error) {
-            System.out.println("Twitter error + " + error.message);
             // Verificamos si no se pudo loguear porque la cuenta no existe
             if(error.code == 414){
                 // Creamos una nueva cuenta ya que es la primera vez que se loguea
                 requestNewAccount();
             }else{
                 // No se pudo loguear por otro motivo
-                mCallback.onError(new Error(-1, "No se pudo obtener el access_token"));
+                mCallback.onError(error);
             }
         }
     };
@@ -63,7 +62,7 @@ abstract public class AuthBase implements AuthInterface {
         @Override
         public void onError(Error error) {
             // No se pudo registrar llamos al callback
-            mCallback.onError(new Error(-1, "No se pudo registrar la cuenta"));
+            mCallback.onError(error);
         }
     };
 
