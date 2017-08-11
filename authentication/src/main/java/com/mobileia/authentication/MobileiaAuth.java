@@ -13,6 +13,8 @@ import com.mobileia.authentication.realm.AuthenticationRealm;
 import com.mobileia.authentication.rest.RestGenerator;
 import com.mobileia.core.entity.Error;
 
+import java.util.Collection;
+
 import io.realm.Realm;
 
 /**
@@ -51,6 +53,18 @@ public class MobileiaAuth {
      */
     public void signInWithFacebook(Activity activity, LoginResult callback){
         new AuthFacebook(activity).signIn(callback);
+    }
+
+    /**
+     * Iniciar sesión con Facebook seteando los permisos
+     * @param activity
+     * @param permissions
+     * @param callback
+     */
+    public void signInWithFacebook(Activity activity, Collection<String> permissions, LoginResult callback){
+        AuthFacebook auth = new AuthFacebook(activity);
+        auth.setPermissions(permissions);
+        auth.signIn(callback);
     }
 
     /**

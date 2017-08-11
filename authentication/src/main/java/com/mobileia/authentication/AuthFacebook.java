@@ -12,6 +12,8 @@ import com.mobileia.facebook.entity.Profile;
 import com.mobileia.facebook.listener.OnErrorLogin;
 import com.mobileia.facebook.listener.OnSuccessLogin;
 
+import java.util.Collection;
+
 /**
  * Created by matiascamiletti on 7/8/17.
  */
@@ -25,6 +27,10 @@ public class AuthFacebook {
      * Almacenamos el callback
      */
     protected LoginResult mCallback;
+    /**
+     * Almacenamos los permisos para pedir en Facebook
+     */
+    protected Collection<String> mPermissions = LoginBuilder.PERMISSIONS_WITH_INFO;
 
     /**
      * Constructor
@@ -43,6 +49,14 @@ public class AuthFacebook {
         mCallback = callback;
         // Abrimos facebook
         openFacebook();
+    }
+
+    /**
+     * Setea los permisos que se requieren
+     * @param permissions
+     */
+    public void setPermissions(Collection<String> permissions){
+        this.mPermissions = permissions;
     }
 
     /**
@@ -106,7 +120,7 @@ public class AuthFacebook {
     protected void openFacebook(){
         new LoginBuilder()
                 .withActivity(mActivity)
-                .withPermissions(LoginBuilder.PERMISSIONS_WITH_INFO)
+                .withPermissions(mPermissions)
                 .withSuccessResult(new OnSuccessLogin() {
                     @Override
                     public void onSuccess(Profile profile) {
