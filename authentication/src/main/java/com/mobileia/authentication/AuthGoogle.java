@@ -117,7 +117,7 @@ public class AuthGoogle {
             @Override
             public void onError(Error error) {
                 // No se pudo registrar llamos al callback
-                mCallback.onError(new Error(-1, "No se pudo registrar la cuenta de google"));
+                mCallback.onError(error);
             }
         });
     }
@@ -137,9 +137,9 @@ public class AuthGoogle {
                 })
                 .withErrorResult(new OnErrorGoogleLogin() {
                     @Override
-                    public void onError() {
+                    public void onError(int code, String message) {
                         // Llamamos al callback con error
-                        mCallback.onError(new Error(-1, "No se pudo loguear con la cuenta de google."));
+                        mCallback.onError(new Error(code, message));
                     }
                 })
                 .build();
