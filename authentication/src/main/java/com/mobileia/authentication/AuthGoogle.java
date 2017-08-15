@@ -1,6 +1,7 @@
 package com.mobileia.authentication;
 
 import android.content.Intent;
+import android.support.annotation.Keep;
 import android.support.v4.app.FragmentActivity;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -17,7 +18,7 @@ import com.mobileia.google.listener.OnSuccessGoogleLogin;
 /**
  * Created by matiascamiletti on 8/8/17.
  */
-
+@Keep
 public class AuthGoogle {
     /**
      * Almacena la actividad

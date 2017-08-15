@@ -98,4 +98,12 @@ public interface AuthService {
             @Field("app_id") int app_id,
             @Field("access_token") String access_token
     );
+
+    @FormUrlEncoded
+    @POST("api/recovery")
+    RestBodyCall<Boolean> recovery(
+            @Field("app_id") int app_id,
+            @Field("email") String email,
+            @Field("password") String password
+    );
 }

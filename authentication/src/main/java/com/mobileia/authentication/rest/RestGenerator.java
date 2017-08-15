@@ -10,6 +10,7 @@ import com.mobileia.authentication.entity.AccessToken;
 import com.mobileia.authentication.entity.User;
 import com.mobileia.authentication.listener.AccessTokenResult;
 import com.mobileia.authentication.listener.LoginResult;
+import com.mobileia.authentication.listener.RecoveryResult;
 import com.mobileia.authentication.listener.RegisterResult;
 import com.mobileia.authentication.realm.AuthenticationRealm;
 import com.mobileia.core.Mobileia;
@@ -205,6 +206,38 @@ public class RestGenerator extends RestBuilder {
             public void onFailure(Call<RestBody<User>> call, Throwable t) {
                 // Llamamos al callback porque hubo error
                 callback.onError(new Error(-1, "No se pudo obtener el perfil del usuario"));
+            }
+        });
+    }
+
+    /**
+     * Funcionalidad para enviar un email asi puede recuperar la contraseña
+     * @param email
+     * @param password
+     * @param callback
+     */
+    public void recovery(String email, String password, final RecoveryResult callback){
+        // Creamos el servicio
+        AuthService service = createService(AuthService.class);
+        // generamos Request
+        RestBodyCall<Boolean> call = service.recovery(Mobileia.getInstance().getAppId(), email, password);
+        // Ejecutamos la call
+        call.enqueue(new Callback<RestBody<Boolean>>() {
+            @Override
+            public void onResponse(Call<RestBody<Boolean>> call, Response<RestBody<Boolean>> response) {
+                // Verificar si la respuesta fue incorrecta
+                if (!response.isSuccessful() || !response.body().success) {
+                    callback.onError(response.body().error);
+                    return;
+                }
+                // Llamamos al callback con exito
+                callback.onSuccess();
+            }
+
+            @Override
+            public void onFailure(Call<RestBody<Boolean>> call, Throwable t) {
+                // Llamamos al callback porque hubo error
+                callback.onError(new Error(-1, "No se pudo recuperar la cuenta"));
             }
         });
     }

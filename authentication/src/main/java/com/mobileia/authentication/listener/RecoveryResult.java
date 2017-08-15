@@ -2,14 +2,13 @@ package com.mobileia.authentication.listener;
 
 import android.support.annotation.Keep;
 
-import com.mobileia.authentication.entity.User;
 import com.mobileia.core.entity.Error;
 
 /**
- * Created by matiascamiletti on 31/7/17.
+ * Created by matiascamiletti on 15/8/17.
  */
 @Keep
-public interface LoginResult {
-    void onSuccess(User user);
+public interface RecoveryResult {
+    void onSuccess();
     void onError(Error error);
 }

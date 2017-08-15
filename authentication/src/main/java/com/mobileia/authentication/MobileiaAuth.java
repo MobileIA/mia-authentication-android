@@ -2,12 +2,14 @@ package com.mobileia.authentication;
 
 import android.app.Activity;
 import android.content.Context;
+import android.support.annotation.Keep;
 import android.support.v4.app.FragmentActivity;
 
 import com.mobileia.authentication.auth.TwitterAuth;
 import com.mobileia.authentication.entity.User;
 import com.mobileia.authentication.listener.AccessTokenResult;
 import com.mobileia.authentication.listener.LoginResult;
+import com.mobileia.authentication.listener.RecoveryResult;
 import com.mobileia.authentication.listener.RegisterResult;
 import com.mobileia.authentication.realm.AuthenticationRealm;
 import com.mobileia.authentication.rest.RestGenerator;
@@ -20,7 +22,7 @@ import io.realm.Realm;
 /**
  * Created by matiascamiletti on 31/7/17.
  */
-
+@Keep
 public class MobileiaAuth {
     /**
      * Almacena la unica instancia de la libreria
@@ -136,6 +138,17 @@ public class MobileiaAuth {
             }
         });
     }
+
+    /**
+     * Funcion para recuperar una cuenta
+     * @param email
+     * @param password
+     * @param callback
+     */
+    public void recoveryWithEmailAndPassword(String email, String password, RecoveryResult callback){
+        new RestGenerator().recovery(email, password, callback);
+    }
+
 
     /**
      * Devuelve el usuario logueado si existe

@@ -1,6 +1,7 @@
 package com.mobileia.authentication;
 
 import android.app.Activity;
+import android.support.annotation.Keep;
 
 import com.mobileia.authentication.listener.AccessTokenResult;
 import com.mobileia.authentication.listener.LoginResult;
@@ -17,7 +18,7 @@ import java.util.Collection;
 /**
  * Created by matiascamiletti on 7/8/17.
  */
-
+@Keep
 public class AuthFacebook {
     /**
      * Almacena la actividad
