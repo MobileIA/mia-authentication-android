@@ -1,11 +1,5 @@
 package com.mobileia.authentication.rest;
 
-import android.content.Context;
-import android.support.v4.BuildConfig;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
 import com.mobileia.authentication.entity.AccessToken;
 import com.mobileia.authentication.entity.User;
 import com.mobileia.authentication.listener.AccessTokenResult;
@@ -15,20 +9,13 @@ import com.mobileia.authentication.listener.RegisterResult;
 import com.mobileia.authentication.realm.AuthenticationRealm;
 import com.mobileia.core.Mobileia;
 import com.mobileia.core.entity.Error;
-import com.mobileia.core.rest.DateDeserializer;
 import com.mobileia.core.rest.RestBody;
 import com.mobileia.core.rest.RestBodyCall;
 import com.mobileia.core.rest.RestBuilder;
 
-import java.io.IOException;
-import java.util.Date;
-import java.util.Locale;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by matiascamiletti on 31/7/17.
@@ -238,6 +225,34 @@ public class RestGenerator extends RestBuilder {
             public void onFailure(Call<RestBody<Boolean>> call, Throwable t) {
                 // Llamamos al callback porque hubo error
                 callback.onError(new Error(-1, "No se pudo recuperar la cuenta"));
+            }
+        });
+    }
+
+    /**
+     * Servicio que registra la localización del dispositivo
+     * @param accessToken
+     * @param latitude
+     * @param longitude
+     */
+    public void locationRegister(String accessToken, double latitude, double longitude){
+        // Creamos el servicio
+        AuthService service = createService(AuthService.class);
+        // generamos Request
+        RestBodyCall<Boolean> call = service.locationRegister(Mobileia.getInstance().getAppId(), accessToken, latitude, longitude);
+        // Ejecutamos la call
+        call.enqueue(new Callback<RestBody<Boolean>>() {
+            @Override
+            public void onResponse(Call<RestBody<Boolean>> call, Response<RestBody<Boolean>> response) {
+                // Verificar si la respuesta fue incorrecta
+                if (!response.isSuccessful() || !response.body().success) {
+                    return;
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RestBody<Boolean>> call, Throwable t) {
+
             }
         });
     }

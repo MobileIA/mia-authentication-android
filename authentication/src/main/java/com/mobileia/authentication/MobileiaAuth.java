@@ -149,6 +149,14 @@ public class MobileiaAuth {
         new RestGenerator().recovery(email, password, callback);
     }
 
+    /**
+     * Funcion que registra la ubicación del dispositivo
+     * @param latitude
+     * @param longitude
+     */
+    public void registerLocationThisDevice(double latitude, double longitude){
+        new RestGenerator().locationRegister(MobileiaAuth.getInstance(mContext).getCurrentUser().getAccessToken(), latitude, longitude);
+    }
 
     /**
      * Devuelve el usuario logueado si existe

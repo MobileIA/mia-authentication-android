@@ -106,4 +106,13 @@ public interface AuthService {
             @Field("email") String email,
             @Field("password") String password
     );
+
+    @FormUrlEncoded
+    @POST("api/location/register")
+    RestBodyCall<Boolean> locationRegister(
+            @Field("app_id") int app_id,
+            @Field("access_token") String access_token,
+            @Field("lat") double latitude,
+            @Field("lng") double longitude
+    );
 }
