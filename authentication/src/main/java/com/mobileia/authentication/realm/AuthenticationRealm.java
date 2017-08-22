@@ -59,6 +59,23 @@ public class AuthenticationRealm {
         // Devolvemos el usuario si existe
         return query.findFirst();
     }
+
+    /**
+     * Elimina el usuario pasado por parametro
+     * @param user
+     */
+    public void deleteUser(final User user){
+        // Obtenemos instancia de realm
+        Realm realm = getRealm();
+        // Ejecutamos transaccion para guardar
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                // Eliminamos usuario
+                user.deleteFromRealm();
+            }
+        });
+    }
     /**
      * Obtiene la instancia de Realm
      * @return

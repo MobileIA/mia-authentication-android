@@ -258,6 +258,31 @@ public class RestGenerator extends RestBuilder {
     }
 
     /**
+     * Llama al servidor para cerra sesion y eliminar AccessToken
+     * @param accessToken
+     */
+    public void logout(String accessToken){
+        // Creamos el servicio
+        AuthService service = createService(AuthService.class);
+        // generamos Request
+        RestBodyCall<Boolean> call = service.logout(Mobileia.getInstance().getAppId(), accessToken);
+        // Ejecutamos la call
+        call.enqueue(new Callback<RestBody<Boolean>>() {
+            @Override
+            public void onResponse(Call<RestBody<Boolean>> call, Response<RestBody<Boolean>> response) {
+                // Verificar si la respuesta fue incorrecta
+                if (!response.isSuccessful() || !response.body().success) {
+                    return;
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RestBody<Boolean>> call, Throwable t) {
+            }
+        });
+    }
+
+    /**
      * Funcion que se encarga de ejecutar la request Oauth de todos los tipos
      * @param call
      * @param callback

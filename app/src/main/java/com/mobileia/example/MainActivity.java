@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.mobileia.authentication.MobileiaAuth;
@@ -24,16 +25,18 @@ public class MainActivity extends AppCompatActivity {
         // Configurar token del dispositivo
         Mobileia.getInstance().setDeviceToken(FirebaseInstanceId.getInstance().getToken());
         // Verificar si ya esta logueado
-        /*User currentUser = MobileiaAuth.getInstance(this).getCurrentUser();
-        if(currentUser == null){
-            onClickLogin(null);
-            return;
+        loadUser();
+    }
+
+    public void loadUser(){
+        TextView textUser = (TextView)findViewById(R.id.textUser);
+
+        User currentUser = MobileiaAuth.getInstance(this).getCurrentUser();
+        if(currentUser != null){
+            textUser.setText(currentUser.getFirstname() + " Tocar aqui para desloguear.");
+        }else{
+            textUser.setText("No hay nadie logueado!");
         }
-        // Mostrar datos del usuario
-        System.out.println("MIA Auth: Logueado: " + currentUser.getFirstname());
-        System.out.println("MIA Auth: Logueado: " + currentUser.getId());
-        System.out.println("MIA Auth: Logueado: " + currentUser.getEmail());
-        System.out.println("MIA Auth: Logueado: " + currentUser);*/
     }
 
     public void onClickLogin(View v){
@@ -50,11 +53,13 @@ public class MainActivity extends AppCompatActivity {
                 System.out.println("MIA Auth: " + user.getAccessToken());
                 System.out.println("MIA Auth: " + user.getPhoto());
                 System.out.println("MIA Auth: " + user.getCreatedAt());
+
+                loadUser();
             }
 
             @Override
             public void onError(Error error) {
-                System.out.println("MIA Auth: Error");
+                System.out.println("MIA Auth: Error" + error.message);
             }
         });
     }
@@ -147,6 +152,10 @@ public class MainActivity extends AppCompatActivity {
                 System.out.println("MIA Auth: Error");
             }
         });
+    }
+
+    public void onClickLogout(View v){
+        MobileiaAuth.getInstance(this).logoutUser();
     }
 
     @Override

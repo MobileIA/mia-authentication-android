@@ -159,6 +159,22 @@ public class MobileiaAuth {
     }
 
     /**
+     * Funcionalidad para cerrar sesión.
+     */
+    public void logoutUser(){
+        // Obtener usuario logueado
+        User user = getCurrentUser();
+        // Verificar si existe
+        if(user == null){
+            return;
+        }
+        // Eliminar AccessToken
+        new RestGenerator().logout(user.getAccessToken());
+        // Eliminar usuario guardado
+        AuthenticationRealm.getInstance().deleteUser(user);
+    }
+
+    /**
      * Devuelve el usuario logueado si existe
      * @return
      */

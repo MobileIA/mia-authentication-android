@@ -115,4 +115,11 @@ public interface AuthService {
             @Field("lat") double latitude,
             @Field("lng") double longitude
     );
+
+    @FormUrlEncoded
+    @POST("api/logout")
+    RestBodyCall<Boolean> logout(
+            @Field("app_id") int app_id,
+            @Field("access_token") String access_token
+    );
 }
