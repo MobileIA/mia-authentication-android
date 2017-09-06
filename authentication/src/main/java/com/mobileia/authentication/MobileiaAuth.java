@@ -156,6 +156,11 @@ public class MobileiaAuth {
      * @param longitude
      */
     public void registerLocationThisDevice(double latitude, double longitude){
+        // Verificamos si esta logueado
+        if(MobileiaAuth.getInstance(mContext).getCurrentUser() == null){
+            return;
+        }
+        // Llamar al servidor
         new RestGenerator().locationRegister(MobileiaAuth.getInstance(mContext).getCurrentUser().getAccessToken(), latitude, longitude);
     }
 
