@@ -2,6 +2,7 @@ package com.mobileia.authentication.realm;
 
 import android.content.Context;
 
+import com.mobileia.authentication.MobileiaAuth;
 import com.mobileia.authentication.entity.User;
 
 import io.realm.Realm;
@@ -43,6 +44,28 @@ public class AuthenticationRealm {
             public void execute(Realm realm) {
                 // Copiamos objeto del usuario
                 realm.copyToRealmOrUpdate(user);
+            }
+        });
+    }
+
+    /**
+     * Se encarga de actualizar los datos del usuario
+     * @param user
+     */
+    public void update(final User user){
+        // Obtenemos instancia de realm
+        Realm realm = getRealm();
+        // Obtener usuario logueado
+        final User current = fetchUser();
+        // Ejecutamos transaccion para guardar
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                // Asignamos nuevos datos
+                current.setFirstname(user.getFirstname());
+                current.setLastname(user.getLastname());
+                current.setPhoto(user.getPhoto());
+                current.setPhone(user.getPhone());
             }
         });
     }

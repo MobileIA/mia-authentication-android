@@ -6,6 +6,7 @@ import com.mobileia.authentication.listener.AccessTokenResult;
 import com.mobileia.authentication.listener.LoginResult;
 import com.mobileia.authentication.listener.RecoveryResult;
 import com.mobileia.authentication.listener.RegisterResult;
+import com.mobileia.authentication.listener.UpdateResult;
 import com.mobileia.authentication.realm.AuthenticationRealm;
 import com.mobileia.core.Mobileia;
 import com.mobileia.core.entity.Error;
@@ -258,6 +259,36 @@ public class RestGenerator extends RestBuilder {
     }
 
     /**
+     * Funcion para actualizar los datos del usuario
+     * @param accessToken
+     * @param user
+     */
+    public void update(String accessToken, User user, final UpdateResult callback){
+        // Creamos el servicio
+        AuthService service = createService(AuthService.class);
+        // generamos Request
+        RestBodyCall<User> call = service.update(Mobileia.getInstance().getAppId(), accessToken, user.getFirstname(), user.getLastname(), user.getPhoto(), user.getPhone());
+        // Ejecutamos la call
+        call.enqueue(new Callback<RestBody<User>>() {
+            @Override
+            public void onResponse(Call<RestBody<User>> call, Response<RestBody<User>> response) {
+                // Verificar si la respuesta fue incorrecta
+                if (!response.isSuccessful() || !response.body().success) {
+                    callback.onError(response.body().error);
+                    return;
+                }
+                callback.onSuccess(response.body().response.getId());
+            }
+
+            @Override
+            public void onFailure(Call<RestBody<User>> call, Throwable t) {
+                // Llamamos al callback porque hubo error
+                callback.onError(new Error(-1, "No se pudo recuperar la cuenta"));
+            }
+        });
+    }
+
+    /**
      * Llama al servidor para cerra sesion y eliminar AccessToken
      * @param accessToken
      */
@@ -308,7 +339,7 @@ public class RestGenerator extends RestBuilder {
     }
 
     /**
-     * Funcion que se encarga de ejecutar la request para regostro
+     * Funcion que se encarga de ejecutar la request para registro
      * @param call
      * @param callback
      */

@@ -11,6 +11,7 @@ import com.mobileia.authentication.listener.AccessTokenResult;
 import com.mobileia.authentication.listener.LoginResult;
 import com.mobileia.authentication.listener.RecoveryResult;
 import com.mobileia.authentication.listener.RegisterResult;
+import com.mobileia.authentication.listener.UpdateResult;
 import com.mobileia.authentication.realm.AuthenticationRealm;
 import com.mobileia.authentication.rest.RestGenerator;
 import com.mobileia.core.entity.Error;
@@ -156,6 +157,30 @@ public class MobileiaAuth {
      */
     public void registerLocationThisDevice(double latitude, double longitude){
         new RestGenerator().locationRegister(MobileiaAuth.getInstance(mContext).getCurrentUser().getAccessToken(), latitude, longitude);
+    }
+
+    /**
+     * Funcion que se encarga de actualizar los datos del usuario
+     * @param user
+     * @param callback
+     */
+    public void updateUser(final User user, final UpdateResult callback){
+        // Llamar al servidor
+        new RestGenerator().update(MobileiaAuth.getInstance(mContext).getCurrentUser().getAccessToken(), user, new UpdateResult() {
+            @Override
+            public void onSuccess(int userId) {
+                // Guardamos usuario en la DB
+                AuthenticationRealm.getInstance().update(user);
+                // Llamamos al callback
+                callback.onSuccess(userId);
+            }
+
+            @Override
+            public void onError(Error error) {
+                // Llamamos al callback
+                callback.onError(error);
+            }
+        });
     }
 
     /**

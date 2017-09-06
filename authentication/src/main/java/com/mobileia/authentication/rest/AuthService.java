@@ -122,4 +122,15 @@ public interface AuthService {
             @Field("app_id") int app_id,
             @Field("access_token") String access_token
     );
+
+    @FormUrlEncoded
+    @POST("api/update")
+    RestBodyCall<User> update(
+            @Field("app_id") int app_id,
+            @Field("access_token") String access_token,
+            @Field("firstname") String firstname,
+            @Field("lastname") String lastname,
+            @Field("photo") String photo,
+            @Field("phone") String phone
+    );
 }
