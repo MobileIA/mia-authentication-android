@@ -131,9 +131,9 @@ public class AuthFacebook {
                 })
                 .withErrorResult(new OnErrorLogin() {
                     @Override
-                    public void onError() {
+                    public void onError(String message) {
                         // Llamamos al callback con error
-                        mCallback.onError(new Error(-1, "No se pudo loguear con la cuenta de facebook."));
+                        mCallback.onError(new Error(-1, message));
                     }
                 })
                 .build();
