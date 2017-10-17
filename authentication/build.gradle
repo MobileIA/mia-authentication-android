@@ -14,7 +14,7 @@ ext {
     siteUrl = 'https://github.com/MobileIA/mia-authentication-android'
     gitUrl = 'https://github.com/MobileIA/mia-authentication-android.git'
 
-    libraryVersion = '0.0.29'
+    libraryVersion = '0.0.30'
 
     developerId = 'mobileia'
     developerName = 'MobileIA'
@@ -27,14 +27,14 @@ ext {
 
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.1"
+    compileSdkVersion 26
+    buildToolsVersion "26.0.2"
 
     defaultConfig {
         minSdkVersion 15
-        targetSdkVersion 25
-        versionCode 29
-        versionName "0.0.29"
+        targetSdkVersion 26
+        versionCode 30
+        versionName "0.0.30"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
@@ -52,10 +52,10 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.android.support:appcompat-v7:26.+'
     testCompile 'junit:junit:4.12'
     compile 'com.mobileia:core:0.0.13'
-    compile 'com.mobileia:facebook:0.0.6'
+    compile 'com.mobileia:facebook:0.0.7'
     compile 'com.mobileia:google:0.0.4'
     compile 'com.mobileia:twitter:0.0.1'
 }
