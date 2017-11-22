@@ -58,7 +58,7 @@ public class TwitterAuth extends AuthBase {
                         // Guardamos datos del token
                         mTwitterToken = user.token;
                         mTwitterSecret = user.secret;
-                        // Ya se logueo con Twitter, realizamos petición para generar AccessToken
+                        // Ya se logueo con Twitter, realizamos peticion para generar AccessToken
                         requestAccessToken();
                     }
 

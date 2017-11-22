@@ -70,7 +70,7 @@ public class AuthGoogle {
         }
     }
     /**
-     * Se encarga de pedir la información del usuario asi la guardamos
+     * Se encarga de pedir la informacion del usuario asi la guardamos
      * @param accessToken
      */
     protected void requestProfile(String accessToken){
@@ -84,7 +84,7 @@ public class AuthGoogle {
         new RestGenerator().oauthGoogle(googleToken, new AccessTokenResult() {
             @Override
             public void onSuccess(String accessToken) {
-                // realizamos petición del perfil del usuario
+                // realizamos peticion del perfil del usuario
                 requestProfile(accessToken);
             }
 
@@ -132,7 +132,7 @@ public class AuthGoogle {
                 .withSuccessResult(new OnSuccessGoogleLogin() {
                     @Override
                     public void onSuccess(GoogleSignInAccount account) {
-                        // Ya se logueo con Facebook, realizamos petición para generar AccessToken
+                        // Ya se logueo con Facebook, realizamos peticion para generar AccessToken
                         requestAccessToken(account.getIdToken());
                     }
                 })

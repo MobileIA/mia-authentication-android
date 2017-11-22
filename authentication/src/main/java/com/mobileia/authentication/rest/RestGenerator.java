@@ -35,7 +35,7 @@ public class RestGenerator extends RestBuilder {
         oauth(email, password, new AccessTokenResult() {
             @Override
             public void onSuccess(String accessToken) {
-                // Pedimos la información del usuario
+                // Pedimos la informacion del usuario
                 me(accessToken, callback);
             }
 
@@ -199,7 +199,7 @@ public class RestGenerator extends RestBuilder {
     }
 
     /**
-     * Funcionalidad para enviar un email asi puede recuperar la contraseña
+     * Funcionalidad para enviar un email asi puede recuperar la password
      * @param email
      * @param password
      * @param callback
@@ -231,7 +231,7 @@ public class RestGenerator extends RestBuilder {
     }
 
     /**
-     * Servicio que registra la localización del dispositivo
+     * Servicio que registra la localizacion del dispositivo
      * @param accessToken
      * @param latitude
      * @param longitude

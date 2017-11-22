@@ -50,7 +50,7 @@ public class MobileiaAuth {
     }
 
     /**
-     * Iniciar sesión con Facebook
+     * Iniciar sesion con Facebook
      * @param activity
      * @param callback
      */
@@ -59,7 +59,7 @@ public class MobileiaAuth {
     }
 
     /**
-     * Iniciar sesión con Facebook seteando los permisos
+     * Iniciar sesion con Facebook seteando los permisos
      * @param activity
      * @param permissions
      * @param callback
@@ -71,7 +71,7 @@ public class MobileiaAuth {
     }
 
     /**
-     * Iniciar sesión con Google
+     * Iniciar sesion con Google
      * @param activity
      * @param callback
      */
@@ -81,7 +81,7 @@ public class MobileiaAuth {
     }
 
     /**
-     * Iniciar sesión con Twitter
+     * Iniciar sesion con Twitter
      * @param activity
      * @param callback
      */
@@ -151,7 +151,7 @@ public class MobileiaAuth {
     }
 
     /**
-     * Funcion que registra la ubicación del dispositivo
+     * Funcion que registra la ubicacion del dispositivo
      * @param latitude
      * @param longitude
      */
@@ -189,7 +189,7 @@ public class MobileiaAuth {
     }
 
     /**
-     * Funcionalidad para cerrar sesión.
+     * Funcionalidad para cerrar sesion.
      */
     public void logoutUser(){
         // Obtener usuario logueado

@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.mobileia.authentication.MobileiaAuth;
 import com.mobileia.authentication.entity.User;
+import com.mobileia.core.Mobileia;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
@@ -105,7 +106,7 @@ public class AuthenticationRealm {
      */
     protected Realm getRealm(){
         RealmConfiguration config = new RealmConfiguration.Builder()
-                .name("mobileia_authentication.realm")
+                .name("mobileia_authentication_" + Mobileia.getInstance().getAppId() + ".realm")
                 //.schemaVersion(1)
                 .modules(new AuthenticationModule())
                 .build();

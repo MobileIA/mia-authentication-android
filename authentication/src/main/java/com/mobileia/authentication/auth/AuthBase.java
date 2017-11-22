@@ -33,7 +33,7 @@ abstract public class AuthBase implements AuthInterface {
         public void onSuccess(String accessToken) {
             // Guardar AccessToken
             mAccessToken = accessToken;
-            // realizamos petición del perfil del usuario
+            // realizamos peticion del perfil del usuario
             requestProfile();
         }
 
@@ -86,7 +86,7 @@ abstract public class AuthBase implements AuthInterface {
     }
 
     /**
-     * Se encarga de pedir la información del usuario asi la guardamos
+     * Se encarga de pedir la informacion del usuario asi la guardamos
      */
     protected void requestProfile(){
         new RestGenerator().me(mAccessToken, mCallback);

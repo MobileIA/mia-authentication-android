@@ -69,7 +69,7 @@ public class AuthFacebook {
         new RestGenerator().oauthFacebook(facebookId, facebookAccessToken, new AccessTokenResult() {
             @Override
             public void onSuccess(String accessToken) {
-                // realizamos petición del perfil del usuario
+                // realizamos peticion del perfil del usuario
                 requestProfile(accessToken);
             }
 
@@ -109,7 +109,7 @@ public class AuthFacebook {
     }
 
     /**
-     * Se encarga de pedir la información del usuario asi la guardamos
+     * Se encarga de pedir la informacion del usuario asi la guardamos
      * @param accessToken
      */
     protected void requestProfile(String accessToken){
@@ -125,7 +125,7 @@ public class AuthFacebook {
                 .withSuccessResult(new OnSuccessLogin() {
                     @Override
                     public void onSuccess(Profile profile) {
-                        // Ya se logueo con Facebook, realizamos petición para generar AccessToken
+                        // Ya se logueo con Facebook, realizamos peticion para generar AccessToken
                         requestAccessToken(profile.id, profile.token);
                     }
                 })
