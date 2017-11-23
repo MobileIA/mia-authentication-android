@@ -14,6 +14,8 @@ import com.mobileia.core.rest.RestBody;
 import com.mobileia.core.rest.RestBodyCall;
 import com.mobileia.core.rest.RestBuilder;
 
+import java.util.Locale;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -56,7 +58,7 @@ public class RestGenerator extends RestBuilder {
         // Creamos el servicio
         AuthService service = createService(AuthService.class);
         // Generamos request
-        RestBodyCall<AccessToken> call = service.oauth(Mobileia.getInstance().getAppId(), "normal", email, password, Mobileia.getInstance().getDeviceToken(), Mobileia.getInstance().getDeviceName(), 0, "es", "1.0");
+        RestBodyCall<AccessToken> call = service.oauth(Mobileia.getInstance().getAppId(), "normal", email, password, Mobileia.getInstance().getDeviceToken(), Mobileia.getInstance().getDeviceName(), 0, Locale.getDefault().getLanguage(), "1.0");
         // Ejecutamos request
         oauthExecuteCall(call, callback);
     }
@@ -70,7 +72,7 @@ public class RestGenerator extends RestBuilder {
         // Creamos el servicio
         AuthService service = createService(AuthService.class);
         // Generamos request
-        RestBodyCall<AccessToken> call = service.oauthWithFacebook(Mobileia.getInstance().getAppId(), "facebook", facebookId, facebookAccessToken, Mobileia.getInstance().getDeviceToken(), Mobileia.getInstance().getDeviceName(), 0, "es", "1.0");
+        RestBodyCall<AccessToken> call = service.oauthWithFacebook(Mobileia.getInstance().getAppId(), "facebook", facebookId, facebookAccessToken, Mobileia.getInstance().getDeviceToken(), Mobileia.getInstance().getDeviceName(), 0, Locale.getDefault().getLanguage(), "1.0");
         // Ejecutamos request
         oauthExecuteCall(call, callback);
     }
@@ -83,7 +85,7 @@ public class RestGenerator extends RestBuilder {
         // Creamos el servicio
         AuthService service = createService(AuthService.class);
         // Generamos request
-        RestBodyCall<AccessToken> call = service.oauthWithGoogle(Mobileia.getInstance().getAppId(), "google", googleToken, Mobileia.getInstance().getDeviceToken(), Mobileia.getInstance().getDeviceName(), 0, "es", "1.0");
+        RestBodyCall<AccessToken> call = service.oauthWithGoogle(Mobileia.getInstance().getAppId(), "google", googleToken, Mobileia.getInstance().getDeviceToken(), Mobileia.getInstance().getDeviceName(), 0, Locale.getDefault().getLanguage(), "1.0");
         // Ejecutamos request
         oauthExecuteCall(call, callback);
     }
@@ -97,7 +99,7 @@ public class RestGenerator extends RestBuilder {
         // Creamos el servicio
         AuthService service = createService(AuthService.class);
         // Generamos request
-        RestBodyCall<AccessToken> call = service.oauthWithTwitter(Mobileia.getInstance().getAppId(), "twitter", twitterToken, twitterSecret, Mobileia.getInstance().getDeviceToken(), Mobileia.getInstance().getDeviceName(), 0, "es", "1.0");
+        RestBodyCall<AccessToken> call = service.oauthWithTwitter(Mobileia.getInstance().getAppId(), "twitter", twitterToken, twitterSecret, Mobileia.getInstance().getDeviceToken(), Mobileia.getInstance().getDeviceName(), 0, Locale.getDefault().getLanguage(), "1.0");
         // Ejecutamos request
         oauthExecuteCall(call, callback);
     }
@@ -109,11 +111,6 @@ public class RestGenerator extends RestBuilder {
      * @param callback
      */
     public void register(User user, String password, final RegisterResult callback){
-        /*params.addProperty("device_token", Mobileia.getInstance().getDeviceToken());
-        params.addProperty("device_model", Mobileia.getInstance().getDeviceName());
-        params.addProperty("platform", 0);
-        params.addProperty("language", Locale.getDefault().getLanguage());
-        params.addProperty("version", BuildConfig.VERSION_NAME);*/
         // Creamos el servicio
         AuthService service = createService(AuthService.class);
         // Generamos Request
@@ -309,6 +306,32 @@ public class RestGenerator extends RestBuilder {
 
             @Override
             public void onFailure(Call<RestBody<Boolean>> call, Throwable t) {
+            }
+        });
+    }
+
+    /**
+     * Servicio que actualiza el token del dispositivo.
+     * @param accessToken
+     */
+    public void updateDeviceToken(String accessToken){
+        // Creamos el servicio
+        AuthService service = createService(AuthService.class);
+        // generamos Request
+        RestBodyCall<Boolean> call = service.updateDeviceToken(Mobileia.getInstance().getAppId(), accessToken, Mobileia.getInstance().getDeviceToken(), Mobileia.getInstance().getDeviceName(), 0, Locale.getDefault().getLanguage(), "1.0");
+        // Ejecutamos la call
+        call.enqueue(new Callback<RestBody<Boolean>>() {
+            @Override
+            public void onResponse(Call<RestBody<Boolean>> call, Response<RestBody<Boolean>> response) {
+                // Verificar si la respuesta fue incorrecta
+                if (!response.isSuccessful() || !response.body().success) {
+                    return;
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RestBody<Boolean>> call, Throwable t) {
+
             }
         });
     }

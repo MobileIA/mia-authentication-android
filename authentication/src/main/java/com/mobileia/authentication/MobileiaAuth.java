@@ -189,6 +189,13 @@ public class MobileiaAuth {
     }
 
     /**
+     * Funcionalidad para actualizar el DeviceToken del dispositivo
+     */
+    public void updateDeviceToken(){
+        new RestGenerator().updateDeviceToken(MobileiaAuth.getInstance(mContext).getCurrentUser().getAccessToken());
+    }
+
+    /**
      * Funcionalidad para cerrar sesion.
      */
     public void logoutUser(){

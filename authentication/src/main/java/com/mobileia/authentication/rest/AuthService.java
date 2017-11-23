@@ -153,4 +153,16 @@ public interface AuthService {
             @Field("photo") String photo,
             @Field("phone") String phone
     );
+
+    @FormUrlEncoded
+    @POST("api/device/update-token")
+    RestBodyCall<Boolean> updateDeviceToken(
+            @Field("app_id") int app_id,
+            @Field("access_token") String access_token,
+            @Field("device_token") String device_token,
+            @Field("device_model") String device_model,
+            @Field("platform") int platform,
+            @Field("language") String language,
+            @Field("version") String version
+    );
 }
