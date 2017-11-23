@@ -56,7 +56,7 @@ public class RestGenerator extends RestBuilder {
         // Creamos el servicio
         AuthService service = createService(AuthService.class);
         // Generamos request
-        RestBodyCall<AccessToken> call = service.oauth(Mobileia.getInstance().getAppId(), "normal", email, password);
+        RestBodyCall<AccessToken> call = service.oauth(Mobileia.getInstance().getAppId(), "normal", email, password, Mobileia.getInstance().getDeviceToken(), Mobileia.getInstance().getDeviceName(), 0, "es", "1.0");
         // Ejecutamos request
         oauthExecuteCall(call, callback);
     }
@@ -70,7 +70,7 @@ public class RestGenerator extends RestBuilder {
         // Creamos el servicio
         AuthService service = createService(AuthService.class);
         // Generamos request
-        RestBodyCall<AccessToken> call = service.oauthWithFacebook(Mobileia.getInstance().getAppId(), "facebook", facebookId, facebookAccessToken);
+        RestBodyCall<AccessToken> call = service.oauthWithFacebook(Mobileia.getInstance().getAppId(), "facebook", facebookId, facebookAccessToken, Mobileia.getInstance().getDeviceToken(), Mobileia.getInstance().getDeviceName(), 0, "es", "1.0");
         // Ejecutamos request
         oauthExecuteCall(call, callback);
     }
@@ -83,7 +83,7 @@ public class RestGenerator extends RestBuilder {
         // Creamos el servicio
         AuthService service = createService(AuthService.class);
         // Generamos request
-        RestBodyCall<AccessToken> call = service.oauthWithGoogle(Mobileia.getInstance().getAppId(), "google", googleToken);
+        RestBodyCall<AccessToken> call = service.oauthWithGoogle(Mobileia.getInstance().getAppId(), "google", googleToken, Mobileia.getInstance().getDeviceToken(), Mobileia.getInstance().getDeviceName(), 0, "es", "1.0");
         // Ejecutamos request
         oauthExecuteCall(call, callback);
     }
@@ -97,7 +97,7 @@ public class RestGenerator extends RestBuilder {
         // Creamos el servicio
         AuthService service = createService(AuthService.class);
         // Generamos request
-        RestBodyCall<AccessToken> call = service.oauthWithTwitter(Mobileia.getInstance().getAppId(), "twitter", twitterToken, twitterSecret);
+        RestBodyCall<AccessToken> call = service.oauthWithTwitter(Mobileia.getInstance().getAppId(), "twitter", twitterToken, twitterSecret, Mobileia.getInstance().getDeviceToken(), Mobileia.getInstance().getDeviceName(), 0, "es", "1.0");
         // Ejecutamos request
         oauthExecuteCall(call, callback);
     }

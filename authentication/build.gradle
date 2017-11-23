@@ -14,7 +14,7 @@ ext {
     siteUrl = 'https://github.com/MobileIA/mia-authentication-android'
     gitUrl = 'https://github.com/MobileIA/mia-authentication-android.git'
 
-    libraryVersion = '0.0.33'
+    libraryVersion = '0.0.34'
 
     developerId = 'mobileia'
     developerName = 'MobileIA'
@@ -33,8 +33,8 @@ android {
     defaultConfig {
         minSdkVersion 15
         targetSdkVersion 26
-        versionCode 33
-        versionName "0.0.33"
+        versionCode 34
+        versionName "0.0.34ew"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 

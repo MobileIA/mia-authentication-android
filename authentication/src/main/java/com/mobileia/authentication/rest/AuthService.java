@@ -24,7 +24,12 @@ public interface AuthService {
             @Field("app_id") int app_id,
             @Field("grant_type") String grant_type,
             @Field("email") String email,
-            @Field("password") String password
+            @Field("password") String password,
+            @Field("device_token") String device_token,
+            @Field("device_model") String device_model,
+            @Field("platform") int platform,
+            @Field("language") String language,
+            @Field("version") String version
     );
 
     @FormUrlEncoded
@@ -33,7 +38,12 @@ public interface AuthService {
             @Field("app_id") int app_id,
             @Field("grant_type") String grant_type,
             @Field("facebook_id") String facebook_id,
-            @Field("facebook_access_token") String facebook_access_token
+            @Field("facebook_access_token") String facebook_access_token,
+            @Field("device_token") String device_token,
+            @Field("device_model") String device_model,
+            @Field("platform") int platform,
+            @Field("language") String language,
+            @Field("version") String version
     );
 
     @FormUrlEncoded
@@ -41,7 +51,12 @@ public interface AuthService {
     RestBodyCall<AccessToken> oauthWithGoogle(
             @Field("app_id") int app_id,
             @Field("grant_type") String grant_type,
-            @Field("google_token") String google_token
+            @Field("google_token") String google_token,
+            @Field("device_token") String device_token,
+            @Field("device_model") String device_model,
+            @Field("platform") int platform,
+            @Field("language") String language,
+            @Field("version") String version
     );
 
     @FormUrlEncoded
@@ -50,7 +65,12 @@ public interface AuthService {
             @Field("app_id") int app_id,
             @Field("grant_type") String grant_type,
             @Field("twitter_token") String twitter_token,
-            @Field("twitter_secret") String twitter_secret
+            @Field("twitter_secret") String twitter_secret,
+            @Field("device_token") String device_token,
+            @Field("device_model") String device_model,
+            @Field("platform") int platform,
+            @Field("language") String language,
+            @Field("version") String version
     );
 
     @FormUrlEncoded
