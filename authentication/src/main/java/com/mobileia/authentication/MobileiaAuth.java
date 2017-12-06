@@ -192,7 +192,12 @@ public class MobileiaAuth {
      * Funcionalidad para actualizar el DeviceToken del dispositivo
      */
     public void updateDeviceToken(){
-        new RestGenerator().updateDeviceToken(MobileiaAuth.getInstance(mContext).getCurrentUser().getAccessToken());
+        // Ver si se encuentra logueado
+        User user = MobileiaAuth.getInstance(mContext).getCurrentUser();
+        if(user == null){
+            return;
+        }
+        new RestGenerator().updateDeviceToken(user.getAccessToken());
     }
 
     /**
