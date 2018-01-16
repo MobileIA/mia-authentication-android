@@ -5,6 +5,7 @@ import android.content.Context;
 import android.support.annotation.Keep;
 import android.support.v4.app.FragmentActivity;
 
+import com.mobileia.authentication.auth.FirebaseAuth;
 import com.mobileia.authentication.auth.TwitterAuth;
 import com.mobileia.authentication.entity.User;
 import com.mobileia.authentication.listener.AccessTokenResult;
@@ -87,6 +88,15 @@ public class MobileiaAuth {
      */
     public void signInWithTwitter(Activity activity, LoginResult callback){
         new TwitterAuth(activity).signIn(callback);
+    }
+
+    /**
+     * Iniciar sesion con Telefono
+     * @param activity
+     * @param callback
+     */
+    public void signInWithPhone(Activity activity, LoginResult callback){
+        new FirebaseAuth(activity).signIn(callback);
     }
 
     /**

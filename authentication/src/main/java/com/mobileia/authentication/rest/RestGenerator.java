@@ -103,6 +103,20 @@ public class RestGenerator extends RestBuilder {
         // Ejecutamos request
         oauthExecuteCall(call, callback);
     }
+    /**
+     * Hace un request para generar un AccessToken desde una cuenta de telefono
+     * @param phone
+     * @param token
+     * @param callback
+     */
+    public void oauthPhone(String phone, String token, final AccessTokenResult callback){
+        // Creamos el servicio
+        AuthService service = createService(AuthService.class);
+        // Generamos request
+        RestBodyCall<AccessToken> call = service.oauthWithPhone(Mobileia.getInstance().getAppId(), "firebase-phone", phone, token, Mobileia.getInstance().getDeviceToken(), Mobileia.getInstance().getDeviceName(), 0, Locale.getDefault().getLanguage(), "1.0");
+        // Ejecutamos request
+        oauthExecuteCall(call, callback);
+    }
 
     /**
      * Hace un request para registrar un usuario con los datos ingresados
@@ -156,6 +170,20 @@ public class RestGenerator extends RestBuilder {
         AuthService service = createService(AuthService.class);
         // Generamos Request
         RestBodyCall<User> call = service.registerWithTwitter(Mobileia.getInstance().getAppId(), "twitter", twitterToken, twitterSecret);
+        // Ejecutamos la request
+        registerExecuteCall(call, callback);
+    }
+    /**
+     * Funcionalidad para registra una cuenta con el telefono
+     * @param phone
+     * @param token
+     * @param callback
+     */
+    public void registerWithPhone(String phone, String token, final RegisterResult callback){
+        // Creamos el servicio
+        AuthService service = createService(AuthService.class);
+        // Generamos Request
+        RestBodyCall<User> call = service.registerWithPhone(Mobileia.getInstance().getAppId(), "firebase-phone", phone, token);
         // Ejecutamos la request
         registerExecuteCall(call, callback);
     }
