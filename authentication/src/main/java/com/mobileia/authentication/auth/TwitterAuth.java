@@ -3,6 +3,7 @@ package com.mobileia.authentication.auth;
 import android.app.Activity;
 import android.app.admin.SystemUpdatePolicy;
 
+import com.mobileia.authentication.core.MobileiaAuthBase;
 import com.mobileia.authentication.rest.RestGenerator;
 import com.mobileia.core.entity.Error;
 import com.mobileia.twitter.builder.TwitterLoginBuilder;
@@ -13,7 +14,7 @@ import com.mobileia.twitter.listener.OnTwitterLoginResult;
  * Created by matiascamiletti on 9/8/17.
  */
 
-public class TwitterAuth extends AuthBase {
+public class TwitterAuth extends MobileiaAuthBase {
     /**
      * Almacena el token del usuario
      */

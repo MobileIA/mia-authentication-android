@@ -3,9 +3,9 @@ package com.mobileia.authentication;
 import android.app.Activity;
 import android.support.annotation.Keep;
 
-import com.mobileia.authentication.listener.AccessTokenResult;
-import com.mobileia.authentication.listener.LoginResult;
-import com.mobileia.authentication.listener.RegisterResult;
+import com.mobileia.authentication.core.listener.AccessTokenResult;
+import com.mobileia.authentication.core.listener.LoginResult;
+import com.mobileia.authentication.core.listener.RegisterResult;
 import com.mobileia.authentication.rest.RestGenerator;
 import com.mobileia.core.entity.Error;
 import com.mobileia.facebook.builder.LoginBuilder;

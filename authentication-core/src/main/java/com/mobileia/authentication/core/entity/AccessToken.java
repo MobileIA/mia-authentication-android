@@ -1,9 +1,9 @@
-package com.mobileia.authentication.entity;
+package com.mobileia.authentication.core.entity;
 
 import io.realm.annotations.PrimaryKey;
 
 /**
- * Created by matiascamiletti on 7/8/17.
+ * Created by matiascamiletti on 1/2/18.
  */
 
 public class AccessToken {

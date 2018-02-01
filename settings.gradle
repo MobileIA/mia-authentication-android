@@ -1,1 +1,1 @@
-include ':app', ':authentication'
+include ':app', ':authentication', ':authentication-core'

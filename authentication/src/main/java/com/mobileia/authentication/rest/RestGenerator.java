@@ -1,18 +1,17 @@
 package com.mobileia.authentication.rest;
 
-import com.mobileia.authentication.entity.AccessToken;
-import com.mobileia.authentication.entity.User;
-import com.mobileia.authentication.listener.AccessTokenResult;
-import com.mobileia.authentication.listener.LoginResult;
+import com.mobileia.authentication.core.rest.AuthRestBase;
+import com.mobileia.authentication.core.entity.AccessToken;
+import com.mobileia.authentication.core.entity.User;
+import com.mobileia.authentication.core.listener.AccessTokenResult;
+import com.mobileia.authentication.core.listener.LoginResult;
 import com.mobileia.authentication.listener.RecoveryResult;
-import com.mobileia.authentication.listener.RegisterResult;
+import com.mobileia.authentication.core.listener.RegisterResult;
 import com.mobileia.authentication.listener.UpdateResult;
-import com.mobileia.authentication.realm.AuthenticationRealm;
 import com.mobileia.core.Mobileia;
 import com.mobileia.core.entity.Error;
 import com.mobileia.core.rest.RestBody;
 import com.mobileia.core.rest.RestBodyCall;
-import com.mobileia.core.rest.RestBuilder;
 
 import java.util.Locale;
 
@@ -24,7 +23,7 @@ import retrofit2.Response;
  * Created by matiascamiletti on 31/7/17.
  */
 
-public class RestGenerator extends RestBuilder {
+public class RestGenerator extends AuthRestBase {
 
     /**
      * Funcion que se encarga de realizar un login a traves del email y password
@@ -103,20 +102,6 @@ public class RestGenerator extends RestBuilder {
         // Ejecutamos request
         oauthExecuteCall(call, callback);
     }
-    /**
-     * Hace un request para generar un AccessToken desde una cuenta de telefono
-     * @param phone
-     * @param token
-     * @param callback
-     */
-    public void oauthPhone(String phone, String token, final AccessTokenResult callback){
-        // Creamos el servicio
-        AuthService service = createService(AuthService.class);
-        // Generamos request
-        RestBodyCall<AccessToken> call = service.oauthWithPhone(Mobileia.getInstance().getAppId(), "firebase-phone", phone, token, Mobileia.getInstance().getDeviceToken(), Mobileia.getInstance().getDeviceName(), 0, Locale.getDefault().getLanguage(), "1.0");
-        // Ejecutamos request
-        oauthExecuteCall(call, callback);
-    }
 
     /**
      * Hace un request para registrar un usuario con los datos ingresados
@@ -172,55 +157,6 @@ public class RestGenerator extends RestBuilder {
         RestBodyCall<User> call = service.registerWithTwitter(Mobileia.getInstance().getAppId(), "twitter", twitterToken, twitterSecret);
         // Ejecutamos la request
         registerExecuteCall(call, callback);
-    }
-    /**
-     * Funcionalidad para registra una cuenta con el telefono
-     * @param phone
-     * @param token
-     * @param callback
-     */
-    public void registerWithPhone(String phone, String token, final RegisterResult callback){
-        // Creamos el servicio
-        AuthService service = createService(AuthService.class);
-        // Generamos Request
-        RestBodyCall<User> call = service.registerWithPhone(Mobileia.getInstance().getAppId(), "firebase-phone", phone, token);
-        // Ejecutamos la request
-        registerExecuteCall(call, callback);
-    }
-    /**
-     * Funcion que se encarga de obtener los datos del usuario a traves del AccessToken
-     * @param accessToken
-     * @param callback
-     */
-    public void me(final String accessToken, final LoginResult callback){
-        // Creamos el servicio
-        AuthService service = createService(AuthService.class);
-        // generamos Request
-        RestBodyCall<User> call = service.me(Mobileia.getInstance().getAppId(), accessToken);
-        call.enqueue(new Callback<RestBody<User>>() {
-            @Override
-            public void onResponse(Call<RestBody<User>> call, Response<RestBody<User>> response) {
-                // Verificar si la respuesta fue incorrecta
-                if (!response.isSuccessful() || !response.body().success) {
-                    callback.onError(response.body().error);
-                    return;
-                }
-                // Obtenemos usuario
-                User user = response.body().response;
-                // Guardamos el AccessToken
-                user.setAccessToken(accessToken);
-                // Guardamos usuario en la DB
-                AuthenticationRealm.getInstance().save(user);
-                // Llamamos al callback con exito
-                callback.onSuccess(user);
-            }
-
-            @Override
-            public void onFailure(Call<RestBody<User>> call, Throwable t) {
-                // Llamamos al callback porque hubo error
-                callback.onError(new Error(-1, "No se pudo obtener el perfil del usuario"));
-            }
-        });
     }
 
     /**
@@ -411,10 +347,5 @@ public class RestGenerator extends RestBuilder {
                 callback.onError(new Error(-1, "Inesperado"));
             }
         });
-    }
-
-    @Override
-    public String getBaseUrl() {
-        return "http://authentication.mobileia.com/";
     }
 }

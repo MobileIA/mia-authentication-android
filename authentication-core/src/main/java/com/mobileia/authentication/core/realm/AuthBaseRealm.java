@@ -1,9 +1,8 @@
-package com.mobileia.authentication.realm;
+package com.mobileia.authentication.core.realm;
 
 import android.content.Context;
 
-import com.mobileia.authentication.MobileiaAuth;
-import com.mobileia.authentication.entity.User;
+import com.mobileia.authentication.core.entity.User;
 import com.mobileia.core.Mobileia;
 
 import io.realm.Realm;
@@ -11,14 +10,14 @@ import io.realm.RealmConfiguration;
 import io.realm.RealmQuery;
 
 /**
- * Created by matiascamiletti on 31/7/17.
+ * Created by matiascamiletti on 31/1/18.
  */
 
-public class AuthenticationRealm {
+public class AuthBaseRealm {
     /**
      * Almacena la unica instancia de la libreria
      */
-    private static AuthenticationRealm sOurInstance = new AuthenticationRealm();
+    private static AuthBaseRealm sOurInstance = new AuthBaseRealm();
     /**
      * Almacena el contexto
      */
@@ -28,7 +27,7 @@ public class AuthenticationRealm {
      * Obtiene la instancia creada
      * @return
      */
-    public static AuthenticationRealm getInstance() {
+    public static AuthBaseRealm getInstance() {
         return sOurInstance;
     }
 
@@ -108,7 +107,7 @@ public class AuthenticationRealm {
         RealmConfiguration config = new RealmConfiguration.Builder()
                 .name("mobileia_authentication_" + Mobileia.getInstance().getAppId() + ".realm")
                 //.schemaVersion(1)
-                .modules(new AuthenticationModule())
+                .modules(new AuthRealmModule())
                 .build();
 
         return Realm.getInstance(config);
@@ -116,6 +115,6 @@ public class AuthenticationRealm {
     /**
      * Constructor del singleton
      */
-    private AuthenticationRealm() {
+    private AuthBaseRealm() {
     }
 }

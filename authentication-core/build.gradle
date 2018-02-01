@@ -1,19 +1,20 @@
 apply plugin: 'com.android.library'
+apply plugin: 'realm-android'
 
 ext {
     bintrayRepo = 'maven'
-    bintrayName = 'mobileia-authentication'
+    bintrayName = 'mobileia-authentication-core'
 
     publishedGroupId = 'com.mobileia'
     libraryName = 'MIA Authentication Library'
-    artifact = 'authentication'
+    artifact = 'authentication-core'
 
     libraryDescription = 'Library Android.'
 
     siteUrl = 'https://github.com/MobileIA/mia-authentication-android'
     gitUrl = 'https://github.com/MobileIA/mia-authentication-android.git'
 
-    libraryVersion = '0.0.42'
+    libraryVersion = '0.0.4'
 
     developerId = 'mobileia'
     developerName = 'MobileIA'
@@ -24,40 +25,38 @@ ext {
     allLicenses = ["Apache-2.0"]
 }
 
-
 android {
-    compileSdkVersion 27
-    buildToolsVersion "27.0.2"
+    compileSdkVersion 26
+    buildToolsVersion "27.0.3"
+
 
     defaultConfig {
-        minSdkVersion 16
-        targetSdkVersion 27
-        versionCode 42
-        versionName "0.0.42"
-        resConfigs "auto"
+        minSdkVersion 15
+        targetSdkVersion 26
+        versionCode 4
+        versionName "0.0.4"
+
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
     }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
 }
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    /*androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+    compile 'com.android.support:appcompat-v7:26.1.0'
+    testCompile 'junit:junit:4.12'
+    androidTestCompile('com.android.support.test.espresso:espresso-core:3.0.1', {
         exclude group: 'com.android.support', module: 'support-annotations'
-    })*/
-    //compile 'com.android.support:appcompat-v7:27.+'
-    //testCompile 'junit:junit:4.12'
+    })
     compile 'com.mobileia:core:0.0.14'
-    compile 'com.mobileia:authentication-core:0.0.4'
-    compile 'com.mobileia:facebook:0.0.9'
-    compile 'com.mobileia:google:0.0.5'
-    compile 'com.mobileia:twitter:0.0.2'
 }
 
 apply from: '../installv1.gradle'

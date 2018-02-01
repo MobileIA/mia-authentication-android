@@ -5,15 +5,15 @@ import android.content.Context;
 import android.support.annotation.Keep;
 import android.support.v4.app.FragmentActivity;
 
-import com.mobileia.authentication.auth.FirebaseAuth;
 import com.mobileia.authentication.auth.TwitterAuth;
-import com.mobileia.authentication.entity.User;
-import com.mobileia.authentication.listener.AccessTokenResult;
-import com.mobileia.authentication.listener.LoginResult;
+import com.mobileia.authentication.core.MobileiaAuthBase;
+import com.mobileia.authentication.core.entity.User;
+import com.mobileia.authentication.core.listener.AccessTokenResult;
+import com.mobileia.authentication.core.listener.LoginResult;
+import com.mobileia.authentication.core.realm.AuthBaseRealm;
 import com.mobileia.authentication.listener.RecoveryResult;
-import com.mobileia.authentication.listener.RegisterResult;
+import com.mobileia.authentication.core.listener.RegisterResult;
 import com.mobileia.authentication.listener.UpdateResult;
-import com.mobileia.authentication.realm.AuthenticationRealm;
 import com.mobileia.authentication.rest.RestGenerator;
 import com.mobileia.core.entity.Error;
 
@@ -48,6 +48,16 @@ public class MobileiaAuth {
             sOurInstance = new MobileiaAuth(context.getApplicationContext());
         }
         return sOurInstance;
+    }
+
+    /**
+     * Iniciar sesion con el servicio pasado
+     * @param service
+     * @param callback
+     */
+    public void signInWith(MobileiaAuthBase service, LoginResult callback){
+        // Iniciamos sesion a traves del servicio enviado
+        service.signIn(callback);
     }
 
     /**
@@ -91,15 +101,6 @@ public class MobileiaAuth {
     }
 
     /**
-     * Iniciar sesion con Telefono
-     * @param activity
-     * @param callback
-     */
-    public void signInWithPhone(Activity activity, LoginResult callback){
-        new FirebaseAuth(activity).signIn(callback);
-    }
-
-    /**
      * Funcion para realizar un login con email y password
      * @param email
      * @param password
@@ -129,7 +130,7 @@ public class MobileiaAuth {
                         // Guardamos el AccessToken
                         user.setAccessToken(accessToken);
                         // Guardamos usuario en la DB
-                        AuthenticationRealm.getInstance().save(user);
+                        AuthBaseRealm.getInstance().save(user);
                         // Llamamos Success
                         callback.onSuccess(user.getId());
                     }
@@ -185,7 +186,7 @@ public class MobileiaAuth {
             @Override
             public void onSuccess(int userId) {
                 // Guardamos usuario en la DB
-                AuthenticationRealm.getInstance().update(user);
+                AuthBaseRealm.getInstance().update(user);
                 // Llamamos al callback
                 callback.onSuccess(userId);
             }
@@ -223,7 +224,7 @@ public class MobileiaAuth {
         // Eliminar AccessToken
         new RestGenerator().logout(user.getAccessToken());
         // Eliminar usuario guardado
-        AuthenticationRealm.getInstance().deleteUser(user);
+        AuthBaseRealm.getInstance().deleteUser(user);
     }
 
     /**
@@ -231,7 +232,7 @@ public class MobileiaAuth {
      * @return
      */
     public User getCurrentUser(){
-        return AuthenticationRealm.getInstance().fetchUser();
+        return AuthBaseRealm.getInstance().fetchUser();
     }
 
     /**

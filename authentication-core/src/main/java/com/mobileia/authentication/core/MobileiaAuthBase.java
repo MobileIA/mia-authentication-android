@@ -1,18 +1,18 @@
-package com.mobileia.authentication.auth;
+package com.mobileia.authentication.core;
 
 import android.app.Activity;
 
-import com.mobileia.authentication.listener.AccessTokenResult;
-import com.mobileia.authentication.listener.LoginResult;
-import com.mobileia.authentication.listener.RegisterResult;
-import com.mobileia.authentication.rest.RestGenerator;
+import com.mobileia.authentication.core.listener.AccessTokenResult;
+import com.mobileia.authentication.core.listener.LoginResult;
+import com.mobileia.authentication.core.listener.RegisterResult;
+import com.mobileia.authentication.core.rest.AuthRestBase;
 import com.mobileia.core.entity.Error;
 
 /**
- * Created by matiascamiletti on 9/8/17.
+ * Created by matiascamiletti on 31/1/18.
  */
 
-abstract public class AuthBase implements AuthInterface {
+abstract public class MobileiaAuthBase implements MobileiaAuthInterface {
     /**
      * Almacena la actividad
      */
@@ -70,7 +70,7 @@ abstract public class AuthBase implements AuthInterface {
      * Constructor
      * @param activity
      */
-    public AuthBase(Activity activity){
+    public MobileiaAuthBase(Activity activity){
         mActivity = activity;
     }
 
@@ -89,6 +89,6 @@ abstract public class AuthBase implements AuthInterface {
      * Se encarga de pedir la informacion del usuario asi la guardamos
      */
     protected void requestProfile(){
-        new RestGenerator().me(mAccessToken, mCallback);
+        new AuthRestBase().me(mAccessToken, mCallback);
     }
 }

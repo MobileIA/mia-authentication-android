@@ -1,6 +1,4 @@
-package com.mobileia.authentication.entity;
-
-import android.support.annotation.Keep;
+package com.mobileia.authentication.core.entity;
 
 import java.util.Date;
 
@@ -8,9 +6,9 @@ import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
 /**
- * Created by matiascamiletti on 31/7/17.
+ * Created by matiascamiletti on 31/1/18.
  */
-@Keep
+
 public class User extends RealmObject {
     @PrimaryKey
     protected int id;
@@ -99,4 +97,5 @@ public class User extends RealmObject {
     public String toString() {
         return firstname + " " + lastname;
     }
+
 }

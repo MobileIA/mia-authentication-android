@@ -5,9 +5,9 @@ import android.support.annotation.Keep;
 import android.support.v4.app.FragmentActivity;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.mobileia.authentication.listener.AccessTokenResult;
-import com.mobileia.authentication.listener.LoginResult;
-import com.mobileia.authentication.listener.RegisterResult;
+import com.mobileia.authentication.core.listener.AccessTokenResult;
+import com.mobileia.authentication.core.listener.LoginResult;
+import com.mobileia.authentication.core.listener.RegisterResult;
 import com.mobileia.authentication.rest.RestGenerator;
 import com.mobileia.core.entity.Error;
 import com.mobileia.google.MobileiaGoogle;

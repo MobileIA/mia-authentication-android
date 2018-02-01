@@ -1,8 +1,8 @@
 package com.mobileia.authentication.rest;
 
 import com.google.gson.JsonObject;
-import com.mobileia.authentication.entity.AccessToken;
-import com.mobileia.authentication.entity.User;
+import com.mobileia.authentication.core.entity.AccessToken;
+import com.mobileia.authentication.core.entity.User;
 import com.mobileia.core.rest.RestBodyCall;
 
 import retrofit2.Call;
@@ -61,20 +61,6 @@ public interface AuthService {
 
     @FormUrlEncoded
     @POST("api/oauth")
-    RestBodyCall<AccessToken> oauthWithPhone(
-            @Field("app_id") int app_id,
-            @Field("grant_type") String grant_type,
-            @Field("phone") String phone,
-            @Field("token") String token,
-            @Field("device_token") String device_token,
-            @Field("device_model") String device_model,
-            @Field("platform") int platform,
-            @Field("language") String language,
-            @Field("version") String version
-    );
-
-    @FormUrlEncoded
-    @POST("api/oauth")
     RestBodyCall<AccessToken> oauthWithTwitter(
             @Field("app_id") int app_id,
             @Field("grant_type") String grant_type,
@@ -124,22 +110,6 @@ public interface AuthService {
             @Field("register_type") String grant_type,
             @Field("twitter_token") String twitter_token,
             @Field("twitter_secret") String twitter_secret
-    );
-
-    @FormUrlEncoded
-    @POST("api/register")
-    RestBodyCall<User> registerWithPhone(
-            @Field("app_id") int app_id,
-            @Field("register_type") String grant_type,
-            @Field("phone") String phone,
-            @Field("token") String token
-    );
-
-    @FormUrlEncoded
-    @POST("api/me")
-    RestBodyCall<User> me(
-            @Field("app_id") int app_id,
-            @Field("access_token") String access_token
     );
 
     @FormUrlEncoded
