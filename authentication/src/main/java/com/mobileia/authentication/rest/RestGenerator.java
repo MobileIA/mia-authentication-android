@@ -76,19 +76,6 @@ public class RestGenerator extends AuthRestBase {
         oauthExecuteCall(call, callback);
     }
     /**
-     * Hace un request para generar un AccessToken desde una cuenta de Google
-     * @param googleToken
-     * @param callback
-     */
-    public void oauthGoogle(String googleToken, final AccessTokenResult callback){
-        // Creamos el servicio
-        AuthService service = createService(AuthService.class);
-        // Generamos request
-        RestBodyCall<AccessToken> call = service.oauthWithGoogle(Mobileia.getInstance().getAppId(), "google", googleToken, Mobileia.getInstance().getDeviceToken(), Mobileia.getInstance().getDeviceName(), 0, Locale.getDefault().getLanguage(), "1.0");
-        // Ejecutamos request
-        oauthExecuteCall(call, callback);
-    }
-    /**
      * Hace un request para generar un AccessToken desde una cuenta de twitter
      * @param twitterToken
      * @param twitterSecret
@@ -128,19 +115,6 @@ public class RestGenerator extends AuthRestBase {
         AuthService service = createService(AuthService.class);
         // Generamos Request
         RestBodyCall<User> call = service.registerWithFacebook(Mobileia.getInstance().getAppId(), "facebook", facebookId, facebookAccessToken);
-        // Ejecutamos la request
-        registerExecuteCall(call, callback);
-    }
-    /**
-     * Funcionalidad para registra una cuenta con Google
-     * @param googleToken
-     * @param callback
-     */
-    public void registerWithGoogle(String googleToken, final RegisterResult callback){
-        // Creamos el servicio
-        AuthService service = createService(AuthService.class);
-        // Generamos Request
-        RestBodyCall<User> call = service.registerWithGoogle(Mobileia.getInstance().getAppId(), "google", googleToken);
         // Ejecutamos la request
         registerExecuteCall(call, callback);
     }

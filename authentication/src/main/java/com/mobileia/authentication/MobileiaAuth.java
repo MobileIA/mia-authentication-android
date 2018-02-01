@@ -37,7 +37,7 @@ public class MobileiaAuth {
     /**
      * Instancia de Google Signin
      */
-    protected AuthGoogle mAuthGoogle;
+    protected MobileiaAuthBase mAuthService;
 
     /**
      * Obtiene la instancia creada
@@ -79,16 +79,6 @@ public class MobileiaAuth {
         AuthFacebook auth = new AuthFacebook(activity);
         auth.setPermissions(permissions);
         auth.signIn(callback);
-    }
-
-    /**
-     * Iniciar sesion con Google
-     * @param activity
-     * @param callback
-     */
-    public void signInWithGoogle(FragmentActivity activity, String googleId, LoginResult callback){
-        mAuthGoogle = new AuthGoogle(activity);
-        mAuthGoogle.signIn(googleId, callback);
     }
 
     /**
@@ -239,7 +229,7 @@ public class MobileiaAuth {
      * Obtiene instancia de AuthGoogle
      * @return
      */
-    public AuthGoogle getAuthGoogle(){ return mAuthGoogle; }
+    public MobileiaAuthBase getAuthService(){ return mAuthService; }
 
     /**
      * Constructor del singleton

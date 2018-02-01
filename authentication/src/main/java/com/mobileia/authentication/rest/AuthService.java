@@ -48,19 +48,6 @@ public interface AuthService {
 
     @FormUrlEncoded
     @POST("api/oauth")
-    RestBodyCall<AccessToken> oauthWithGoogle(
-            @Field("app_id") int app_id,
-            @Field("grant_type") String grant_type,
-            @Field("google_token") String google_token,
-            @Field("device_token") String device_token,
-            @Field("device_model") String device_model,
-            @Field("platform") int platform,
-            @Field("language") String language,
-            @Field("version") String version
-    );
-
-    @FormUrlEncoded
-    @POST("api/oauth")
     RestBodyCall<AccessToken> oauthWithTwitter(
             @Field("app_id") int app_id,
             @Field("grant_type") String grant_type,
@@ -93,14 +80,6 @@ public interface AuthService {
             @Field("register_type") String grant_type,
             @Field("facebook_id") String facebook_id,
             @Field("facebook_access_token") String facebook_access_token
-    );
-
-    @FormUrlEncoded
-    @POST("api/register")
-    RestBodyCall<User> registerWithGoogle(
-            @Field("app_id") int app_id,
-            @Field("register_type") String grant_type,
-            @Field("google_token") String google_token
     );
 
     @FormUrlEncoded
