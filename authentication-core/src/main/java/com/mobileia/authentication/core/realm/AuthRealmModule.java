@@ -7,6 +7,6 @@ import io.realm.annotations.RealmModule;
 /**
  * Created by matiascamiletti on 31/1/18.
  */
-@RealmModule(library = true, classes = { User.class })
+@RealmModule(library = true, allClasses = false, classes = { User.class })
 public class AuthRealmModule {
 }

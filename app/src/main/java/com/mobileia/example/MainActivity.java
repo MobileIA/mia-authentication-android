@@ -8,9 +8,9 @@ import android.widget.TextView;
 
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.mobileia.authentication.MobileiaAuth;
-import com.mobileia.authentication.entity.User;
-import com.mobileia.authentication.listener.LoginResult;
-import com.mobileia.authentication.listener.RegisterResult;
+import com.mobileia.authentication.core.entity.User;
+import com.mobileia.authentication.core.listener.LoginResult;
+import com.mobileia.authentication.core.listener.RegisterResult;
 import com.mobileia.core.Mobileia;
 import com.mobileia.core.entity.Error;
 
@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClickGoogle(View view){
-        MobileiaAuth.getInstance(this).signInWithGoogle(this, "428204135163-ak18l1l7sm490d7s6t0d5q4v69m2rruc.apps.googleusercontent.com", new LoginResult() {
+        /*MobileiaAuth.getInstance(this).signInWithGoogle(this, "428204135163-ak18l1l7sm490d7s6t0d5q4v69m2rruc.apps.googleusercontent.com", new LoginResult() {
             @Override
             public void onSuccess(User user) {
                 System.out.println("MIA Auth: Success Google");
@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
             public void onError(Error error) {
                 System.out.println("MIA Auth: Error Google: " + error.message);
             }
-        });
+        });*/
     }
 
     public void onClickTwitter(View v){
@@ -161,6 +161,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        MobileiaAuth.getInstance(this).getAuthGoogle().onActivityResult(requestCode, resultCode, data);
+        //MobileiaAuth.getInstance(this).getAuthGoogle().onActivityResult(requestCode, resultCode, data);
     }
 }

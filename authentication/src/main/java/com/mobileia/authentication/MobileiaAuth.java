@@ -5,7 +5,6 @@ import android.content.Context;
 import android.support.annotation.Keep;
 import android.support.v4.app.FragmentActivity;
 
-import com.mobileia.authentication.auth.TwitterAuth;
 import com.mobileia.authentication.core.MobileiaAuthBase;
 import com.mobileia.authentication.core.entity.User;
 import com.mobileia.authentication.core.listener.AccessTokenResult;
@@ -79,15 +78,6 @@ public class MobileiaAuth {
         AuthFacebook auth = new AuthFacebook(activity);
         auth.setPermissions(permissions);
         auth.signIn(callback);
-    }
-
-    /**
-     * Iniciar sesion con Twitter
-     * @param activity
-     * @param callback
-     */
-    public void signInWithTwitter(Activity activity, LoginResult callback){
-        new TwitterAuth(activity).signIn(callback);
     }
 
     /**
