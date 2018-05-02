@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClickTwitter(View v){
-        MobileiaAuth.getInstance(this).signInWithTwitter(this, new LoginResult() {
+        /*MobileiaAuth.getInstance(this).signInWithTwitter(this, new LoginResult() {
             @Override
             public void onSuccess(User user) {
                 System.out.println("MIA Auth: Success Twitter");
@@ -124,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
             public void onError(Error error) {
                 System.out.println("MIA Auth: Error Twitter: " + error.message);
             }
-        });
+        });*/
     }
 
     public void onClickRegister(View v){

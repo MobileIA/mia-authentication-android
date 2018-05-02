@@ -91,4 +91,18 @@ abstract public class MobileiaAuthBase implements MobileiaAuthInterface {
     protected void requestProfile(){
         new AuthRestBase().me(mAccessToken, mCallback);
     }
+
+    /**
+     * Setea el callback
+     * @param callback
+     */
+    public void setCallback(LoginResult callback){
+        this.mCallback = callback;
+    }
+
+    /**
+     * Obtiene el callback
+     * @return
+     */
+    public LoginResult getCallback(){ return this.mCallback; }
 }

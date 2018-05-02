@@ -3,7 +3,6 @@ package com.mobileia.authentication;
 import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.Keep;
-import android.support.v4.app.FragmentActivity;
 
 import com.mobileia.authentication.core.MobileiaAuthBase;
 import com.mobileia.authentication.core.entity.User;
@@ -17,8 +16,6 @@ import com.mobileia.authentication.rest.RestGenerator;
 import com.mobileia.core.entity.Error;
 
 import java.util.Collection;
-
-import io.realm.Realm;
 
 /**
  * Created by matiascamiletti on 31/7/17.
@@ -229,6 +226,6 @@ public class MobileiaAuth {
         // Guardamos contexto
         this.mContext = context;
         // Iniciamos Realm
-        Realm.init(context);
+        //Realm.init(context);
     }
 }
