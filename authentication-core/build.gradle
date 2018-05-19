@@ -14,7 +14,7 @@ ext {
     siteUrl = 'https://github.com/MobileIA/mia-authentication-android'
     gitUrl = 'https://github.com/MobileIA/mia-authentication-android.git'
 
-    libraryVersion = '0.0.12'
+    libraryVersion = '0.0.13'
 
     developerId = 'mobileia'
     developerName = 'MobileIA'
@@ -26,15 +26,15 @@ ext {
 }
 
 android {
-    compileSdkVersion 26
+    compileSdkVersion 27
     buildToolsVersion "27.0.3"
 
 
     defaultConfig {
         minSdkVersion 15
-        targetSdkVersion 26
-        versionCode 12
-        versionName "0.0.12"
+        targetSdkVersion 27
+        versionCode 13
+        versionName "0.0.13"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
@@ -49,13 +49,8 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    //compile 'com.android.support:appcompat-v7:26.1.0'
-    testCompile 'junit:junit:4.12'
-    androidTestCompile('com.android.support.test.espresso:espresso-core:3.0.1', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
-    compile 'com.mobileia:core:0.0.21'
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.mobileia:core:0.0.22'
 }
 
 //apply from: '../installv1.gradle'

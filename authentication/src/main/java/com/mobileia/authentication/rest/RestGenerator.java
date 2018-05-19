@@ -12,11 +12,11 @@ import com.mobileia.core.Mobileia;
 import com.mobileia.core.entity.Error;
 import com.mobileia.core.rest.RestBody;
 import com.mobileia.core.rest.RestBodyCall;
+import com.mobileia.core.rest.RestBodyCallback;
 
 import java.util.Locale;
 
 import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
@@ -145,22 +145,17 @@ public class RestGenerator extends AuthRestBase {
         // generamos Request
         RestBodyCall<Boolean> call = service.recovery(Mobileia.getInstance().getAppId(), email, password);
         // Ejecutamos la call
-        call.enqueue(new Callback<RestBody<Boolean>>() {
+        call.enqueue(new RestBodyCallback<Boolean>() {
             @Override
-            public void onResponse(Call<RestBody<Boolean>> call, Response<RestBody<Boolean>> response) {
-                // Verificar si la respuesta fue incorrecta
-                if (!response.isSuccessful() || !response.body().success) {
-                    callback.onError(response.body().error);
-                    return;
-                }
+            public void onSuccess(Boolean body) {
                 // Llamamos al callback con exito
                 callback.onSuccess();
             }
 
             @Override
-            public void onFailure(Call<RestBody<Boolean>> call, Throwable t) {
+            public void onError(Error error) {
                 // Llamamos al callback porque hubo error
-                callback.onError(new Error(-1, "No se pudo recuperar la cuenta"));
+                callback.onError(error);
             }
         });
     }
@@ -177,17 +172,14 @@ public class RestGenerator extends AuthRestBase {
         // generamos Request
         RestBodyCall<Boolean> call = service.locationRegister(Mobileia.getInstance().getAppId(), accessToken, latitude, longitude);
         // Ejecutamos la call
-        call.enqueue(new Callback<RestBody<Boolean>>() {
+        call.enqueue(new RestBodyCallback<Boolean>() {
             @Override
-            public void onResponse(Call<RestBody<Boolean>> call, Response<RestBody<Boolean>> response) {
-                // Verificar si la respuesta fue incorrecta
-                if (!response.isSuccessful() || !response.body().success) {
-                    return;
-                }
+            public void onSuccess(Boolean body) {
+
             }
 
             @Override
-            public void onFailure(Call<RestBody<Boolean>> call, Throwable t) {
+            public void onError(Error error) {
 
             }
         });
@@ -204,21 +196,16 @@ public class RestGenerator extends AuthRestBase {
         // generamos Request
         RestBodyCall<User> call = service.update(Mobileia.getInstance().getAppId(), accessToken, user.getFirstname(), user.getLastname(), user.getPhoto(), user.getPhone());
         // Ejecutamos la call
-        call.enqueue(new Callback<RestBody<User>>() {
+        call.enqueue(new RestBodyCallback<User>() {
             @Override
-            public void onResponse(Call<RestBody<User>> call, Response<RestBody<User>> response) {
-                // Verificar si la respuesta fue incorrecta
-                if (!response.isSuccessful() || !response.body().success) {
-                    callback.onError(response.body().error);
-                    return;
-                }
-                callback.onSuccess(response.body().response.getId());
+            public void onSuccess(User body) {
+                callback.onSuccess(body.getId());
             }
 
             @Override
-            public void onFailure(Call<RestBody<User>> call, Throwable t) {
+            public void onError(Error error) {
                 // Llamamos al callback porque hubo error
-                callback.onError(new Error(-1, "No se pudo recuperar la cuenta"));
+                callback.onError(error);
             }
         });
     }
@@ -233,17 +220,15 @@ public class RestGenerator extends AuthRestBase {
         // generamos Request
         RestBodyCall<Boolean> call = service.logout(Mobileia.getInstance().getAppId(), accessToken);
         // Ejecutamos la call
-        call.enqueue(new Callback<RestBody<Boolean>>() {
+        call.enqueue(new RestBodyCallback<Boolean>() {
             @Override
-            public void onResponse(Call<RestBody<Boolean>> call, Response<RestBody<Boolean>> response) {
-                // Verificar si la respuesta fue incorrecta
-                if (!response.isSuccessful() || !response.body().success) {
-                    return;
-                }
+            public void onSuccess(Boolean body) {
+
             }
 
             @Override
-            public void onFailure(Call<RestBody<Boolean>> call, Throwable t) {
+            public void onError(Error error) {
+
             }
         });
     }
@@ -258,17 +243,14 @@ public class RestGenerator extends AuthRestBase {
         // generamos Request
         RestBodyCall<Boolean> call = service.updateDeviceToken(Mobileia.getInstance().getAppId(), accessToken, Mobileia.getInstance().getDeviceToken(), Mobileia.getInstance().getDeviceName(), 0, Locale.getDefault().getLanguage(), "1.0");
         // Ejecutamos la call
-        call.enqueue(new Callback<RestBody<Boolean>>() {
+        call.enqueue(new RestBodyCallback<Boolean>() {
             @Override
-            public void onResponse(Call<RestBody<Boolean>> call, Response<RestBody<Boolean>> response) {
-                // Verificar si la respuesta fue incorrecta
-                if (!response.isSuccessful() || !response.body().success) {
-                    return;
-                }
+            public void onSuccess(Boolean body) {
+
             }
 
             @Override
-            public void onFailure(Call<RestBody<Boolean>> call, Throwable t) {
+            public void onError(Error error) {
 
             }
         });
@@ -280,21 +262,16 @@ public class RestGenerator extends AuthRestBase {
      * @param callback
      */
     protected void oauthExecuteCall(RestBodyCall<AccessToken> call, final AccessTokenResult callback){
-        call.enqueue(new Callback<RestBody<AccessToken>>() {
+        call.enqueue(new RestBodyCallback<AccessToken>() {
             @Override
-            public void onResponse(Call<RestBody<AccessToken>> call, Response<RestBody<AccessToken>> response) {
-                // Verificar si la respuesta fue incorrecta
-                if (!response.isSuccessful() || !response.body().success) {
-                    callback.onError(response.body().error);
-                    return;
-                }
+            public void onSuccess(AccessToken body) {
                 // Enviamos el accessToken obtenido
-                callback.onSuccess(response.body().response.access_token);
+                callback.onSuccess(body.access_token);
             }
 
             @Override
-            public void onFailure(Call<RestBody<AccessToken>> call, Throwable t) {
-                callback.onError(new Error(-1, "Inesperado"));
+            public void onError(Error error) {
+                callback.onError(error);
             }
         });
     }
@@ -305,20 +282,15 @@ public class RestGenerator extends AuthRestBase {
      * @param callback
      */
     protected void registerExecuteCall(RestBodyCall<User> call, final RegisterResult callback){
-        call.enqueue(new Callback<RestBody<User>>() {
+        call.enqueue(new RestBodyCallback<User>() {
             @Override
-            public void onResponse(Call<RestBody<User>> call, Response<RestBody<User>> response) {
-                // Verificar si la respuesta fue incorrecta
-                if (!response.isSuccessful() || !response.body().success) {
-                    callback.onError(response.body().error);
-                    return;
-                }
-                callback.onSuccess(response.body().response.getId());
+            public void onSuccess(User body) {
+                callback.onSuccess(body.getId());
             }
 
             @Override
-            public void onFailure(Call<RestBody<User>> call, Throwable t) {
-                callback.onError(new Error(-1, "Inesperado"));
+            public void onError(Error error) {
+                callback.onError(error);
             }
         });
     }

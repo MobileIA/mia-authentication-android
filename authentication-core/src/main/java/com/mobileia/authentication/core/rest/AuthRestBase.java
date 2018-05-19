@@ -12,12 +12,12 @@ import com.mobileia.core.Mobileia;
 import com.mobileia.core.entity.Error;
 import com.mobileia.core.rest.RestBody;
 import com.mobileia.core.rest.RestBodyCall;
+import com.mobileia.core.rest.RestBodyCallback;
 import com.mobileia.core.rest.RestBuilder;
 
 import java.util.Locale;
 
 import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
@@ -44,20 +44,15 @@ public class AuthRestBase extends RestBuilder {
         // Generamos Request
         RestBodyCall<User> call = service.register(params);
         // Ejecutamos la request
-        call.enqueue(new Callback<RestBody<User>>() {
+        call.enqueue(new RestBodyCallback<User>() {
             @Override
-            public void onResponse(Call<RestBody<User>> call, Response<RestBody<User>> response) {
-                // Verificar si la respuesta fue incorrecta
-                if (!response.isSuccessful() || !response.body().success) {
-                    callback.onError(response.body().error);
-                    return;
-                }
-                callback.onSuccess(response.body().response.getId());
+            public void onSuccess(User body) {
+                callback.onSuccess(body.getId());
             }
 
             @Override
-            public void onFailure(Call<RestBody<User>> call, Throwable t) {
-                callback.onError(new Error(-1, "Inesperado"));
+            public void onError(Error error) {
+                callback.onError(error);
             }
         });
     }
@@ -79,21 +74,16 @@ public class AuthRestBase extends RestBuilder {
         // Generamos request
         RestBodyCall<AccessToken> call = service.oauth(params);
         // Ejecutamos request
-        call.enqueue(new Callback<RestBody<AccessToken>>() {
+        call.enqueue(new RestBodyCallback<AccessToken>() {
             @Override
-            public void onResponse(Call<RestBody<AccessToken>> call, Response<RestBody<AccessToken>> response) {
-                // Verificar si la respuesta fue incorrecta
-                if (!response.isSuccessful() || !response.body().success) {
-                    callback.onError(response.body().error);
-                    return;
-                }
+            public void onSuccess(AccessToken body) {
                 // Enviamos el accessToken obtenido
-                callback.onSuccess(response.body().response.access_token);
+                callback.onSuccess(body.access_token);
             }
 
             @Override
-            public void onFailure(Call<RestBody<AccessToken>> call, Throwable t) {
-                callback.onError(new Error(-1, "Inesperado"));
+            public void onError(Error error) {
+                callback.onError(error);
             }
         });
     }
@@ -107,16 +97,12 @@ public class AuthRestBase extends RestBuilder {
         UserService service = createService(UserService.class);
         // generamos Request
         RestBodyCall<User> call = service.me(Mobileia.getInstance().getAppId(), accessToken);
-        call.enqueue(new Callback<RestBody<User>>() {
+        // Ejecutamos call
+        call.enqueue(new RestBodyCallback<User>() {
             @Override
-            public void onResponse(Call<RestBody<User>> call, Response<RestBody<User>> response) {
-                // Verificar si la respuesta fue incorrecta
-                if (!response.isSuccessful() || !response.body().success) {
-                    callback.onError(response.body().error);
-                    return;
-                }
+            public void onSuccess(User body) {
                 // Obtenemos usuario
-                User user = response.body().response;
+                User user = body;
                 // Guardamos el AccessToken
                 user.setAccessToken(accessToken);
                 // Guardamos usuario en la DB
@@ -126,9 +112,9 @@ public class AuthRestBase extends RestBuilder {
             }
 
             @Override
-            public void onFailure(Call<RestBody<User>> call, Throwable t) {
+            public void onError(Error error) {
                 // Llamamos al callback porque hubo error
-                callback.onError(new Error(-1, "No se pudo obtener el perfil del usuario"));
+                callback.onError(error);
             }
         });
     }

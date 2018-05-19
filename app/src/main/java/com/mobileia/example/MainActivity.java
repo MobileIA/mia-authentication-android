@@ -14,11 +14,14 @@ import com.mobileia.authentication.core.listener.RegisterResult;
 import com.mobileia.core.Mobileia;
 import com.mobileia.core.entity.Error;
 
+import io.realm.Realm;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Realm.init(this);
         setContentView(R.layout.activity_main);
         // Configurar Mobileia Lab
         Mobileia.getInstance().setAppId(8);
@@ -41,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void onClickLogin(View v){
         // Login de Usuario
-        MobileiaAuth.getInstance(this).signInWithEmailAndPassword("matiascamiletti@mobileia.com", "123Qwerty", new LoginResult() {
+        MobileiaAuth.getInstance(this).signInWithEmailAndPassword("mati25435354@gmail.com", "123456Password", new LoginResult() {
             @Override
             public void onSuccess(User user) {
                 System.out.println("MIA Auth: Success");
@@ -59,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onError(Error error) {
-                System.out.println("MIA Auth: Error" + error.message);
+                System.out.println("MIA Auth: Error: " + error.message);
             }
         });
     }
