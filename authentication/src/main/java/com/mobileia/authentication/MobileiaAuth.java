@@ -16,8 +16,6 @@ import com.mobileia.authentication.listener.UpdateResult;
 import com.mobileia.authentication.rest.RestGenerator;
 import com.mobileia.core.entity.Error;
 
-import java.util.Collection;
-
 /**
  * Created by matiascamiletti on 31/7/17.
  */
@@ -72,27 +70,6 @@ public class MobileiaAuth {
 
             }
         });
-    }
-
-    /**
-     * Iniciar sesion con Facebook
-     * @param activity
-     * @param callback
-     */
-    public void signInWithFacebook(Activity activity, LoginResult callback){
-        new AuthFacebook(activity).signIn(callback);
-    }
-
-    /**
-     * Iniciar sesion con Facebook seteando los permisos
-     * @param activity
-     * @param permissions
-     * @param callback
-     */
-    public void signInWithFacebook(Activity activity, Collection<String> permissions, LoginResult callback){
-        AuthFacebook auth = new AuthFacebook(activity);
-        auth.setPermissions(permissions);
-        auth.signIn(callback);
     }
 
     /**

@@ -61,34 +61,6 @@ public class RestGenerator extends AuthRestBase {
         // Ejecutamos request
         oauthExecuteCall(call, callback);
     }
-    /**
-     * Hace un request para generar un AccessToken desde uan cuenta de facebook
-     * @param facebookId
-     * @param facebookAccessToken
-     * @param callback
-     */
-    public void oauthFacebook(String facebookId, String facebookAccessToken, final AccessTokenResult callback){
-        // Creamos el servicio
-        AuthService service = createService(AuthService.class);
-        // Generamos request
-        RestBodyCall<AccessToken> call = service.oauthWithFacebook(Mobileia.getInstance().getAppId(), "facebook", facebookId, facebookAccessToken, Mobileia.getInstance().getDeviceToken(), Mobileia.getInstance().getDeviceName(), 0, Locale.getDefault().getLanguage(), "1.0");
-        // Ejecutamos request
-        oauthExecuteCall(call, callback);
-    }
-    /**
-     * Hace un request para generar un AccessToken desde una cuenta de twitter
-     * @param twitterToken
-     * @param twitterSecret
-     * @param callback
-     */
-    public void oauthTwitter(String twitterToken, String twitterSecret, final AccessTokenResult callback){
-        // Creamos el servicio
-        AuthService service = createService(AuthService.class);
-        // Generamos request
-        RestBodyCall<AccessToken> call = service.oauthWithTwitter(Mobileia.getInstance().getAppId(), "twitter", twitterToken, twitterSecret, Mobileia.getInstance().getDeviceToken(), Mobileia.getInstance().getDeviceName(), 0, Locale.getDefault().getLanguage(), "1.0");
-        // Ejecutamos request
-        oauthExecuteCall(call, callback);
-    }
 
     /**
      * Hace un request para registrar un usuario con los datos ingresados
@@ -101,34 +73,6 @@ public class RestGenerator extends AuthRestBase {
         AuthService service = createService(AuthService.class);
         // Generamos Request
         RestBodyCall<User> call = service.register(Mobileia.getInstance().getAppId(), "normal", user.getEmail(), password, user.getFirstname(), user.getLastname(), user.getPhoto(), user.getPhone());
-        // Ejecutamos la request
-        registerExecuteCall(call, callback);
-    }
-    /**
-     * Funcionalidad para registra una cuenta con Facebook
-     * @param facebookId
-     * @param facebookAccessToken
-     * @param callback
-     */
-    public void registerWithFacebook(String facebookId, String facebookAccessToken, final RegisterResult callback){
-        // Creamos el servicio
-        AuthService service = createService(AuthService.class);
-        // Generamos Request
-        RestBodyCall<User> call = service.registerWithFacebook(Mobileia.getInstance().getAppId(), "facebook", facebookId, facebookAccessToken);
-        // Ejecutamos la request
-        registerExecuteCall(call, callback);
-    }
-    /**
-     * Funcionalidad para registra una cuenta con Facebook
-     * @param twitterToken
-     * @param twitterSecret
-     * @param callback
-     */
-    public void registerWithTwitter(String twitterToken, String twitterSecret, final RegisterResult callback){
-        // Creamos el servicio
-        AuthService service = createService(AuthService.class);
-        // Generamos Request
-        RestBodyCall<User> call = service.registerWithTwitter(Mobileia.getInstance().getAppId(), "twitter", twitterToken, twitterSecret);
         // Ejecutamos la request
         registerExecuteCall(call, callback);
     }

@@ -33,34 +33,6 @@ public interface AuthService {
     );
 
     @FormUrlEncoded
-    @POST("api/oauth")
-    RestBodyCall<AccessToken> oauthWithFacebook(
-            @Field("app_id") int app_id,
-            @Field("grant_type") String grant_type,
-            @Field("facebook_id") String facebook_id,
-            @Field("facebook_access_token") String facebook_access_token,
-            @Field("device_token") String device_token,
-            @Field("device_model") String device_model,
-            @Field("platform") int platform,
-            @Field("language") String language,
-            @Field("version") String version
-    );
-
-    @FormUrlEncoded
-    @POST("api/oauth")
-    RestBodyCall<AccessToken> oauthWithTwitter(
-            @Field("app_id") int app_id,
-            @Field("grant_type") String grant_type,
-            @Field("twitter_token") String twitter_token,
-            @Field("twitter_secret") String twitter_secret,
-            @Field("device_token") String device_token,
-            @Field("device_model") String device_model,
-            @Field("platform") int platform,
-            @Field("language") String language,
-            @Field("version") String version
-    );
-
-    @FormUrlEncoded
     @POST("api/register")
     RestBodyCall<User> register(
             @Field("app_id") int app_id,
@@ -71,24 +43,6 @@ public interface AuthService {
             @Field("lastname") String lastname,
             @Field("photo") String photo,
             @Field("phone") String phone
-    );
-
-    @FormUrlEncoded
-    @POST("api/register")
-    RestBodyCall<User> registerWithFacebook(
-            @Field("app_id") int app_id,
-            @Field("register_type") String grant_type,
-            @Field("facebook_id") String facebook_id,
-            @Field("facebook_access_token") String facebook_access_token
-    );
-
-    @FormUrlEncoded
-    @POST("api/register")
-    RestBodyCall<User> registerWithTwitter(
-            @Field("app_id") int app_id,
-            @Field("register_type") String grant_type,
-            @Field("twitter_token") String twitter_token,
-            @Field("twitter_secret") String twitter_secret
     );
 
     @FormUrlEncoded
