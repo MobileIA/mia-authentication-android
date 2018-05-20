@@ -9,6 +9,7 @@ import com.mobileia.authentication.core.entity.User;
 import com.mobileia.authentication.core.listener.AccessTokenResult;
 import com.mobileia.authentication.core.listener.LoginResult;
 import com.mobileia.authentication.core.realm.AuthBaseRealm;
+import com.mobileia.authentication.core.rest.AuthRestBase;
 import com.mobileia.authentication.listener.RecoveryResult;
 import com.mobileia.authentication.core.listener.RegisterResult;
 import com.mobileia.authentication.listener.UpdateResult;
@@ -54,6 +55,23 @@ public class MobileiaAuth {
     public void signInWith(MobileiaAuthBase service, LoginResult callback){
         // Iniciamos sesion a traves del servicio enviado
         service.signIn(callback);
+    }
+
+    /**
+     * Funcion para sincronizar el perfil del usuario
+     */
+    public void syncProfile(){
+        new AuthRestBase().me(MobileiaAuth.getInstance(mContext).getCurrentUser().getAccessToken(), new LoginResult() {
+            @Override
+            public void onSuccess(User user) {
+
+            }
+
+            @Override
+            public void onError(Error error) {
+
+            }
+        });
     }
 
     /**
