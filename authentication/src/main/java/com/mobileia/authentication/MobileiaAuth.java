@@ -1,7 +1,5 @@
 package com.mobileia.authentication;
 
-import android.app.Activity;
-import android.content.Context;
 import android.support.annotation.Keep;
 
 import com.mobileia.authentication.core.MobileiaAuthBase;
@@ -26,10 +24,6 @@ public class MobileiaAuth {
      */
     private static MobileiaAuth sOurInstance = null;
     /**
-     * Almacena el contexto
-     */
-    protected Context mContext;
-    /**
      * Instancia de Google Signin
      */
     protected MobileiaAuthBase mAuthService;
@@ -38,9 +32,9 @@ public class MobileiaAuth {
      * Obtiene la instancia creada
      * @return
      */
-    public static MobileiaAuth getInstance(Context context) {
+    public static MobileiaAuth getInstance() {
         if(sOurInstance == null){
-            sOurInstance = new MobileiaAuth(context.getApplicationContext());
+            sOurInstance = new MobileiaAuth();
         }
         return sOurInstance;
     }
@@ -59,7 +53,7 @@ public class MobileiaAuth {
      * Funcion para sincronizar el perfil del usuario
      */
     public void syncProfile(){
-        new AuthRestBase().me(MobileiaAuth.getInstance(mContext).getCurrentUser().getAccessToken(), new LoginResult() {
+        new AuthRestBase().me(getCurrentUser().getAccessToken(), new LoginResult() {
             @Override
             public void onSuccess(User user) {
 
@@ -140,11 +134,11 @@ public class MobileiaAuth {
      */
     public void registerLocationThisDevice(double latitude, double longitude){
         // Verificamos si esta logueado
-        if(MobileiaAuth.getInstance(mContext).getCurrentUser() == null){
+        if(getCurrentUser() == null){
             return;
         }
         // Llamar al servidor
-        new RestGenerator().locationRegister(MobileiaAuth.getInstance(mContext).getCurrentUser().getAccessToken(), latitude, longitude);
+        new RestGenerator().locationRegister(getCurrentUser().getAccessToken(), latitude, longitude);
     }
 
     /**
@@ -154,7 +148,7 @@ public class MobileiaAuth {
      */
     public void updateUser(final User user, final UpdateResult callback){
         // Llamar al servidor
-        new RestGenerator().update(MobileiaAuth.getInstance(mContext).getCurrentUser().getAccessToken(), user, new UpdateResult() {
+        new RestGenerator().update(getCurrentUser().getAccessToken(), user, new UpdateResult() {
             @Override
             public void onSuccess(int userId) {
                 // Guardamos usuario en la DB
@@ -176,7 +170,7 @@ public class MobileiaAuth {
      */
     public void updateDeviceToken(){
         // Ver si se encuentra logueado
-        User user = MobileiaAuth.getInstance(mContext).getCurrentUser();
+        User user = getCurrentUser();
         if(user == null){
             return;
         }
@@ -215,12 +209,8 @@ public class MobileiaAuth {
 
     /**
      * Constructor del singleton
-     * @param context
      */
-    private MobileiaAuth(Context context) {
-        // Guardamos contexto
-        this.mContext = context;
-        // Iniciamos Realm
-        //Realm.init(context);
+    private MobileiaAuth() {
+
     }
 }
