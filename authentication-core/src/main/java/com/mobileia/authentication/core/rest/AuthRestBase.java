@@ -124,6 +124,6 @@ public class AuthRestBase extends RestBuilder {
      */
     @Override
     public String getBaseUrl() {
-        return "http://authentication.mobileia.com/";
+        return "https://authentication.mobileia.com/";
     }
 }

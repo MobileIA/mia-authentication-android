@@ -1,7 +1,5 @@
 package com.mobileia.authentication;
 
-import android.support.annotation.Keep;
-
 import com.mobileia.authentication.core.MobileiaAuthBase;
 import com.mobileia.authentication.core.entity.User;
 import com.mobileia.authentication.core.listener.AccessTokenResult;
@@ -17,7 +15,7 @@ import com.mobileia.core.entity.Error;
 /**
  * Created by matiascamiletti on 31/7/17.
  */
-@Keep
+
 public class MobileiaAuth {
     /**
      * Almacena la unica instancia de la libreria
